@@ -151,7 +151,8 @@ export default function ComparePage() {
           gapAnalysis: JSON.stringify(gap),
         });
         setLoading(false);
-        setEmailGate({ nameA: auditA.profile.name, nameB: auditB.profile.name, scoreA: auditA.overallScore, scoreB: auditB.overallScore, gradeA: auditA.overallGrade, gradeB: auditB.overallGrade, comparisonId: id });
+        router.push(`/compare/${id}`);
+        return;
         return;
       } catch {
         setResult({ a: auditA, b: auditB, gap });
@@ -164,9 +165,7 @@ export default function ComparePage() {
     }
   };
 
-  if (emailGate) {
-    return <CompareEmailGate {...emailGate} onSkip={() => router.push(`/compare/${emailGate.comparisonId}`)} />;
-  }
+  // Email gate removed for growth phase — optimize for virality over friction
 
   if (loading) {
     return (

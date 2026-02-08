@@ -73,7 +73,7 @@ export default function AuditPage() {
             overallGrade: data.audit.overallGrade,
           });
           setLoading(false);
-          setEmailGate({ profileName: data.audit.profile.name, score: data.audit.overallScore, grade: data.audit.overallGrade, auditId: id });
+          router.push(`/audit/${id}`);
           return;
         } catch {
           setAudit(data.audit);
@@ -103,7 +103,7 @@ export default function AuditPage() {
                 overallGrade: statusData.audit.overallGrade,
               });
               setLoading(false);
-              setEmailGate({ profileName: statusData.audit.profile.name, score: statusData.audit.overallScore, grade: statusData.audit.overallGrade, auditId: id });
+              router.push(`/audit/${id}`);
               return;
             } catch {
               setAudit(statusData.audit);
@@ -123,9 +123,7 @@ export default function AuditPage() {
     }
   };
 
-  if (emailGate) {
-    return <EmailGate {...emailGate} onSkip={() => router.push(`/audit/${emailGate.auditId}`)} />;
-  }
+  // Email gate removed for growth phase — optimize for virality over friction
 
   if (loading) {
     return (
