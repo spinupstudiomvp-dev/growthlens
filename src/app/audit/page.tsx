@@ -9,13 +9,26 @@ export default function AuditPage() {
   const [loading, setLoading] = useState(false);
   const [audit, setAudit] = useState<ProfileAudit | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
+    try {
+      const res = await fetch("/api/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ profileUrl: url }),
+      });
+      const data = await res.json();
+      if (data.audit) {
+        setAudit(data.audit);
+      } else {
+        setAudit(mockProfileA);
+      }
+    } catch {
       setAudit(mockProfileA);
+    } finally {
       setLoading(false);
-    }, 2500);
+    }
   };
 
   if (loading) {

@@ -1,8 +1,8 @@
 const APIFY_TOKEN = process.env.APIFY_TOKEN || "";
-const USE_MOCK = process.env.USE_MOCK_DATA !== "false"; // default to mock
+const LINKEDIN_COOKIE = process.env.LINKEDIN_COOKIE || "";
 
-const PROFILE_ACTOR = "curious_coder/linkedin-profile-scraper";
-const POSTS_ACTOR = "curious_coder/linkedin-posts-scraper"; // replace with actual actor
+const PROFILE_ACTOR = "logical_scrapers/linkedin-profile-scraper";
+const POSTS_ACTOR = "curious_coder/linkedin-post-search-scraper";
 
 interface ApifyRunResult {
   id: string;
@@ -18,12 +18,15 @@ export async function runApifyActor(actorId: string, input: Record<string, unkno
       body: JSON.stringify(input),
     }
   );
-  if (!res.ok) throw new Error(`Apify run failed: ${res.status}`);
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Apify run failed: ${res.status} — ${text}`);
+  }
   const data = await res.json();
   return { id: data.data.id, defaultDatasetId: data.data.defaultDatasetId };
 }
 
-export async function waitForRun(runId: string, timeoutMs = 120000): Promise<void> {
+export async function waitForRun(runId: string, timeoutMs = 180000): Promise<void> {
   const start = Date.now();
   while (Date.now() - start < timeoutMs) {
     const res = await fetch(`https://api.apify.com/v2/actor-runs/${runId}?token=${APIFY_TOKEN}`);
@@ -44,24 +47,29 @@ export async function getDatasetItems(datasetId: string): Promise<unknown[]> {
 }
 
 export async function scrapeLinkedInProfile(profileUrl: string) {
-  if (USE_MOCK) return null; // caller should use mock data
+  if (!APIFY_TOKEN || !LINKEDIN_COOKIE) return null;
 
   const run = await runApifyActor(PROFILE_ACTOR, {
     profileUrls: [profileUrl],
-    // cookie: process.env.LINKEDIN_COOKIE, // add when available
+    cookie: [{ name: "li_at", value: LINKEDIN_COOKIE, domain: ".linkedin.com" }],
   });
   await waitForRun(run.id);
   const items = await getDatasetItems(run.defaultDatasetId);
   return items[0] || null;
 }
 
-export async function scrapeLinkedInPosts(profileUrl: string) {
-  if (USE_MOCK) return null;
+export async function scrapeLinkedInPosts(profileUrl: string, maxPosts = 50) {
+  if (!APIFY_TOKEN || !LINKEDIN_COOKIE) return null;
+
+  // Extract the public profile ID from the URL
+  const match = profileUrl.match(/linkedin\.com\/in\/([^/?]+)/);
+  const profileId = match ? match[1] : profileUrl;
 
   const run = await runApifyActor(POSTS_ACTOR, {
-    profileUrls: [profileUrl],
-    maxPosts: 50,
-    // cookie: process.env.LINKEDIN_COOKIE,
+    searchUrls: [`https://www.linkedin.com/in/${profileId}/recent-activity/all/`],
+    cookie: [{ name: "li_at", value: LINKEDIN_COOKIE, domain: ".linkedin.com" }],
+    maxResults: maxPosts,
+    deepScrape: true,
   });
   await waitForRun(run.id);
   return getDatasetItems(run.defaultDatasetId);
