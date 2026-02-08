@@ -13,6 +13,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning>
       <body className="min-h-screen" suppressHydrationWarning>
         <AuthProvider>
+          {/* OrionChat Widget */}
+          <script src="https://orion-chat-six.vercel.app/widget.js" data-site-id="growthlens" data-accent="#10b981" defer />
           <nav className="fixed top-0 w-full z-50 bg-navy/80 backdrop-blur-xl border-b border-slate-600/10">
             <div className="max-w-7xl mx-auto px-8 py-4 flex items-center justify-between">
               <a href="/" className="flex items-center gap-3">
