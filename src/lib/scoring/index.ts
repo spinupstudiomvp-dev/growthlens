@@ -16,10 +16,20 @@ import { scoreStrategy } from "./strategy-scorer";
  * Grade curve: A (85+), B (70-84), C (55-69), D (40-54), F (<40)
  */
 export function computeAudit(profile: any, posts: any[]): ProfileAudit {
+  // Filter to only authored posts (exclude reshares/reposts)
+  const profilePublicId = profile.publicIdentifier || "";
+  const authoredPosts = posts.filter((p: any) => {
+    // Exclude if header says "reposted this"
+    if (p.header?.text && /reposted this/i.test(p.header.text)) return false;
+    // Exclude if author doesn't match the audited profile
+    if (profilePublicId && p.author?.publicIdentifier && p.author.publicIdentifier !== profilePublicId) return false;
+    return true;
+  });
+
   const { result: profileResult, score: profileScore } = scoreProfile(profile);
-  const { result: contentResult, score: contentScore } = scoreContent(posts);
-  const { result: engagementResult, score: engagementScore } = scoreEngagement(posts, profile.followerCount || 0);
-  const { score: consistencyScore } = scoreConsistency(posts);
+  const { result: contentResult, score: contentScore } = scoreContent(authoredPosts);
+  const { result: engagementResult, score: engagementScore } = scoreEngagement(authoredPosts, profile.followerCount || 0);
+  const { score: consistencyScore } = scoreConsistency(authoredPosts);
   const { score: strategyScore } = scoreStrategy(
     contentResult.contentPillars.length,
     contentResult.hookPatterns.length,

@@ -250,19 +250,26 @@ export default function SavedAuditPage({ params }: { params: Promise<{ id: strin
         <Card>
           <CardHeader title="Top Performing Posts" />
           <div className="space-y-3">
-            {contentStrategy.topPosts.map((post, i) => (
-              <div key={i} className="flex items-start justify-between gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/[0.04]">
-                <div className="flex-1 min-w-0">
-                  <span className="text-xs px-2 py-0.5 rounded-full bg-accent/10 text-accent mb-2 inline-block">{post.type}</span>
-                  <p className="text-slate-300 text-sm leading-relaxed">&ldquo;{post.text}&rdquo;</p>
-                </div>
-                <div className="flex gap-4 text-xs text-slate-400 shrink-0 pt-1">
-                  <span>❤️ {post.likes.toLocaleString()}</span>
-                  <span>💬 {post.comments}</span>
-                  <span>🔄 {post.shares}</span>
-                </div>
-              </div>
-            ))}
+            {contentStrategy.topPosts.map((post, i) => {
+              const Wrapper = post.url ? "a" : "div";
+              const linkProps = post.url ? { href: post.url, target: "_blank", rel: "noopener noreferrer" } : {};
+              return (
+                <Wrapper key={i} {...linkProps} className={`flex items-start justify-between gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/[0.04] ${post.url ? "hover:border-accent/20 hover:bg-white/[0.04] transition-colors cursor-pointer" : ""}`}>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-accent/10 text-accent">{post.type}</span>
+                      {post.url && <span className="text-[10px] text-slate-500">↗ View on LinkedIn</span>}
+                    </div>
+                    <p className="text-slate-300 text-sm leading-relaxed">&ldquo;{post.text}&rdquo;</p>
+                  </div>
+                  <div className="flex gap-4 text-xs text-slate-400 shrink-0 pt-1">
+                    <span>❤️ {post.likes.toLocaleString()}</span>
+                    <span>💬 {post.comments}</span>
+                    <span>🔄 {post.shares}</span>
+                  </div>
+                </Wrapper>
+              );
+            })}
           </div>
         </Card>
 

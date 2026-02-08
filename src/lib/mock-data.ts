@@ -18,7 +18,7 @@ export interface ProfileAudit {
     weeklyFrequency: number[];
     contentTypes: { type: string; percentage: number; color: string }[];
     contentPillars: { topic: string; percentage: number }[];
-    topPosts: { text: string; likes: number; comments: number; shares: number; type: string }[];
+    topPosts: { text: string; likes: number; comments: number; shares: number; type: string; url?: string }[];
     hookPatterns: { pattern: string; percentage: number }[];
     hashtagStrategy: { avg: number; topHashtags: string[] };
     postingSchedule: number[][];

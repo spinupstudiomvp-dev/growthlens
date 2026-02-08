@@ -7,7 +7,7 @@ export interface ContentResult {
   weeklyFrequency: number[];
   contentTypes: { type: string; percentage: number; color: string }[];
   contentPillars: { topic: string; percentage: number }[];
-  topPosts: { text: string; likes: number; comments: number; shares: number; type: string }[];
+  topPosts: { text: string; likes: number; comments: number; shares: number; type: string; url?: string }[];
   hookPatterns: { pattern: string; percentage: number }[];
   hashtagStrategy: { avg: number; topHashtags: string[] };
   postingSchedule: number[][];
@@ -82,6 +82,7 @@ export function scoreContent(posts: any[]): { result: ContentResult; score: numb
     comments: p.engagement?.comments || 0,
     shares: p.engagement?.shares || 0,
     type: p.postImages?.length ? "image" : p.type || "text",
+    url: p.linkedinUrl || undefined,
   }));
 
   // --- Hook patterns ---
