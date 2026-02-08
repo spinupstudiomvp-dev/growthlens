@@ -115,8 +115,8 @@ export function generateRecommendations(audit: ProfileAudit): AuditRecommendatio
     });
   }
 
-  // Reply rate
-  if (engagement.replyRate < 60) {
+  // Reply rate (only if data available)
+  if (engagement.replyRate != null && engagement.replyRate < 60) {
     const severity = engagement.replyRate < 30 ? "High" : "Medium";
     recs.push({
       priority: severity,

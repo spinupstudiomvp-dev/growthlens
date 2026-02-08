@@ -187,8 +187,8 @@ export default function SavedAuditPage({ params }: { params: Promise<{ id: strin
             </div>
             <div>
               <MetricRow label="Engagement Rate" value={`${engagement.engagementRate}%`} accent />
-              <MetricRow label="Reply Rate" value={`${engagement.replyRate}%`} />
-              <MetricRow label="Growth Estimate" value={engagement.growthEstimate} accent />
+              {engagement.replyRate != null && <MetricRow label="Reply Rate" value={`${engagement.replyRate}%`} />}
+              {engagement.growthEstimate && <MetricRow label="Growth Estimate" value={engagement.growthEstimate} accent />}
             </div>
           </Card>
 

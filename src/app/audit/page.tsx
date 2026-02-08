@@ -238,9 +238,9 @@ export default function AuditPage() {
             </div>
             <div>
               <MetricRow label="Engagement Rate" value={`${engagement.engagementRate}%`} accent />
-              <MetricRow label="Reply Rate" value={`${engagement.replyRate}%`} />
-              <MetricRow label="Avg Reply Time" value={engagement.avgReplyTime} />
-              <MetricRow label="Growth Estimate" value={engagement.growthEstimate} accent />
+              {engagement.replyRate != null && <MetricRow label="Reply Rate" value={`${engagement.replyRate}%`} />}
+              {engagement.avgReplyTime && <MetricRow label="Avg Reply Time" value={engagement.avgReplyTime} />}
+              {engagement.growthEstimate && <MetricRow label="Growth Estimate" value={engagement.growthEstimate} accent />}
             </div>
           </Card>
 

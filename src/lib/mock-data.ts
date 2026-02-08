@@ -28,9 +28,9 @@ export interface ProfileAudit {
     avgComments: number;
     avgShares: number;
     engagementRate: number;
-    replyRate: number;
-    avgReplyTime: string;
-    growthEstimate: string;
+    replyRate?: number;
+    avgReplyTime?: string;
+    growthEstimate?: string;
   };
   overallGrade: string;
   overallScore: number;
@@ -96,9 +96,6 @@ export const mockProfileA: ProfileAudit = {
     avgComments: 156,
     avgShares: 42,
     engagementRate: 4.8,
-    replyRate: 78,
-    avgReplyTime: "~2 hours",
-    growthEstimate: "+2,400 followers/month",
   },
   overallGrade: "A",
   overallScore: 88,
@@ -167,9 +164,6 @@ export const mockProfileB: ProfileAudit = {
     avgComments: 9,
     avgShares: 2,
     engagementRate: 1.2,
-    replyRate: 25,
-    avgReplyTime: "~18 hours",
-    growthEstimate: "+120 followers/month",
   },
   overallGrade: "D+",
   overallScore: 34,

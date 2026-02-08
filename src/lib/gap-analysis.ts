@@ -111,7 +111,7 @@ export function generateGapAnalysis(yours: ProfileAudit, theirs: ProfileAudit): 
   }
 
   // Reply rate / timing
-  if (yours.engagement.replyRate < theirs.engagement.replyRate - 20) {
+  if ((yours.engagement.replyRate ?? 0) < (theirs.engagement.replyRate ?? 0) - 20) {
     recs.push({
       priority: "Medium",
       action: `Reply to comments faster. Early engagement signals boost algorithmic reach significantly.`,
