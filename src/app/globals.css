@@ -8,22 +8,11 @@
   --color-navy-lighter: #1e293b;
   --color-accent: #10b981;
   --color-accent-dim: #059669;
-  --color-slate-200: #e2e8f0;
-  --color-slate-300: #cbd5e1;
-  --color-slate-400: #94a3b8;
-  --color-slate-500: #64748b;
-  --color-slate-600: #475569;
   --color-red: #ef4444;
   --color-amber: #f59e0b;
-  --color-blue: #3b82f6;
-  --color-purple: #8b5cf6;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/* Tailwind v4 preflight handles resets — no manual * reset needed */
 
 body {
   background: #0a0f1e;
