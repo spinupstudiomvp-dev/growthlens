@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { mockProfileA, type ProfileAudit } from "@/lib/mock-data";
 import { DonutChart, BarChart, HeatmapGrid, ScoreRing, ProgressBar, RadarChart } from "@/components/charts";
+import { Card, CardHeader, StatCard, MetricRow } from "@/components/ui";
 
 export default function AuditPage() {
   const [url, setUrl] = useState("");
@@ -42,19 +43,11 @@ export default function AuditPage() {
       <div className="min-h-screen flex items-center justify-center px-6">
         <div className="max-w-xl w-full text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4" style={{ fontFamily: 'Satoshi, sans-serif' }}>Audit a LinkedIn Profile</h1>
-          <p className="text-slate-400 mb-8 text-lg">Paste any LinkedIn profile URL to get a full strategy breakdown</p>
+          <p className="text-slate-400 mb-10 text-lg">Paste any LinkedIn profile URL to get a full strategy breakdown</p>
           <form onSubmit={handleSubmit} className="flex gap-3">
-            <input
-              type="url"
-              required
-              placeholder="https://linkedin.com/in/username"
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              className="flex-1 bg-navy-light border border-slate-600/30 rounded-xl px-5 py-4 text-white placeholder:text-slate-500 focus:outline-none focus:border-accent/50 transition-colors text-lg"
-            />
-            <button type="submit" className="bg-accent hover:bg-accent-dim text-navy font-bold px-8 py-4 rounded-xl text-lg transition-colors whitespace-nowrap">
-              Analyze
-            </button>
+            <input type="url" required placeholder="https://linkedin.com/in/username" value={url} onChange={(e) => setUrl(e.target.value)}
+              className="flex-1 bg-white/[0.03] border border-white/[0.08] rounded-xl px-5 py-4 text-white placeholder:text-slate-600 focus:outline-none focus:border-accent/40 transition-colors text-lg" />
+            <button type="submit" className="bg-accent hover:bg-accent-dim text-navy font-bold px-8 py-4 rounded-xl text-lg transition-colors whitespace-nowrap">Analyze</button>
           </form>
           <p className="text-slate-500 text-sm mt-4">Try it with any LinkedIn URL — we&apos;ll show a demo audit</p>
         </div>
@@ -66,18 +59,18 @@ export default function AuditPage() {
 
   return (
     <div className="min-h-screen py-12 px-6">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-6xl mx-auto space-y-8">
         {/* Header */}
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-10 gap-6">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div>
-            <div className="flex items-center gap-4 mb-2">
-              <div className="w-14 h-14 rounded-full bg-accent/20 flex items-center justify-center text-accent text-xl font-bold">{profile.name.charAt(0)}</div>
+            <div className="flex items-center gap-4 mb-3">
+              <div className="w-14 h-14 rounded-full bg-accent/20 flex items-center justify-center text-accent text-xl font-bold shrink-0">{profile.name.charAt(0)}</div>
               <div>
                 <h1 className="text-2xl font-bold text-white" style={{ fontFamily: 'Satoshi, sans-serif' }}>{profile.name}</h1>
-                <p className="text-slate-400 text-sm">{profile.headline}</p>
+                <p className="text-slate-400 text-sm mt-0.5">{profile.headline}</p>
               </div>
             </div>
-            <div className="flex gap-6 mt-3 text-sm">
+            <div className="flex gap-6 text-sm ml-[4.5rem]">
               <span className="text-slate-400"><span className="text-white font-semibold">{profile.followers.toLocaleString()}</span> followers</span>
               <span className="text-slate-400"><span className="text-white font-semibold">{profile.connections.toLocaleString()}</span> connections</span>
             </div>
@@ -85,9 +78,9 @@ export default function AuditPage() {
           <ScoreRing score={audit.overallScore} grade={audit.overallGrade} />
         </div>
 
-        {/* Overview radar */}
-        <div className="glass rounded-2xl p-8 mb-8">
-          <h2 className="text-xl font-bold text-white mb-6" style={{ fontFamily: 'Satoshi, sans-serif' }}>Overall Breakdown</h2>
+        {/* Overall Breakdown */}
+        <Card>
+          <CardHeader title="Overall Breakdown" />
           <div className="flex flex-col md:flex-row items-center gap-8">
             <RadarChart data={audit.breakdown} />
             <div className="flex-1 space-y-4 w-full">
@@ -96,12 +89,12 @@ export default function AuditPage() {
               ))}
             </div>
           </div>
-        </div>
+        </Card>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-6">
           {/* Profile Audit */}
-          <div className="glass rounded-2xl p-8">
-            <h2 className="text-xl font-bold text-white mb-6" style={{ fontFamily: 'Satoshi, sans-serif' }}>Profile Audit</h2>
+          <Card>
+            <CardHeader title="Profile Audit" />
             <div className="space-y-5">
               <ProgressBar value={profile.completenessScore} label="Profile Completeness" />
               <div>
@@ -112,7 +105,7 @@ export default function AuditPage() {
               <div>
                 <div className="flex justify-between text-sm mb-1"><span className="text-slate-300">About Section</span><span className="text-accent">{profile.aboutAnalysis.score}/100</span></div>
                 <p className="text-xs text-slate-500">Structure: {profile.aboutAnalysis.structure}</p>
-                <div className="flex gap-3 mt-1">
+                <div className="flex gap-4 mt-1">
                   <span className={`text-xs ${profile.aboutAnalysis.hasHook ? "text-accent" : "text-red"}`}>{profile.aboutAnalysis.hasHook ? "✓" : "✗"} Hook</span>
                   <span className={`text-xs ${profile.aboutAnalysis.hasCTA ? "text-accent" : "text-red"}`}>{profile.aboutAnalysis.hasCTA ? "✓" : "✗"} CTA</span>
                 </div>
@@ -122,137 +115,129 @@ export default function AuditPage() {
                 <p className="text-xs text-slate-500">{profile.bannerAssessment.quality}</p>
               </div>
               <div>
-                <div className="flex justify-between text-sm mb-1"><span className="text-slate-300">Featured Section</span><span className={profile.featuredSection.hasItems ? "text-accent text-xs" : "text-red text-xs"}>{profile.featuredSection.hasItems ? `${profile.featuredSection.count} items` : "Empty"}</span></div>
+                <div className="flex justify-between text-sm mb-1">
+                  <span className="text-slate-300">Featured Section</span>
+                  <span className={profile.featuredSection.hasItems ? "text-accent text-xs" : "text-red text-xs"}>{profile.featuredSection.hasItems ? `${profile.featuredSection.count} items` : "Empty"}</span>
+                </div>
                 {profile.featuredSection.types.length > 0 && (
                   <div className="flex gap-2 mt-1 flex-wrap">{profile.featuredSection.types.map((t, i) => <span key={i} className="text-xs px-2 py-0.5 rounded-full bg-accent/10 text-accent">{t}</span>)}</div>
                 )}
               </div>
               <div>
                 <div className="flex justify-between text-sm mb-1"><span className="text-slate-300">Experience Framing</span><span className="text-accent">{profile.experienceFraming.score}/100</span></div>
-                <div className="flex gap-3 mt-1">
+                <div className="flex gap-4 mt-1">
                   <span className={`text-xs ${profile.experienceFraming.actionOriented ? "text-accent" : "text-red"}`}>{profile.experienceFraming.actionOriented ? "✓" : "✗"} Action-oriented</span>
                   <span className={`text-xs ${profile.experienceFraming.metricsUsed ? "text-accent" : "text-red"}`}>{profile.experienceFraming.metricsUsed ? "✓" : "✗"} Uses metrics</span>
                 </div>
               </div>
             </div>
-          </div>
+          </Card>
 
           {/* Engagement */}
-          <div className="glass rounded-2xl p-8">
-            <h2 className="text-xl font-bold text-white mb-6" style={{ fontFamily: 'Satoshi, sans-serif' }}>Engagement Analysis</h2>
-            <div className="grid grid-cols-3 gap-4 mb-6">
-              {[
-                { label: "Avg Likes", value: engagement.avgLikes.toLocaleString() },
-                { label: "Avg Comments", value: engagement.avgComments.toLocaleString() },
-                { label: "Avg Shares", value: engagement.avgShares.toLocaleString() },
-              ].map((stat, i) => (
-                <div key={i} className="text-center p-4 rounded-xl bg-navy/50">
-                  <div className="text-2xl font-bold text-white">{stat.value}</div>
-                  <div className="text-xs text-slate-500">{stat.label}</div>
-                </div>
-              ))}
+          <Card>
+            <CardHeader title="Engagement Analysis" />
+            <div className="grid grid-cols-3 gap-3 mb-6">
+              <StatCard label="Avg Likes" value={engagement.avgLikes.toLocaleString()} />
+              <StatCard label="Avg Comments" value={engagement.avgComments.toLocaleString()} />
+              <StatCard label="Avg Shares" value={engagement.avgShares.toLocaleString()} />
             </div>
-            <div className="space-y-4">
-              <div className="flex justify-between text-sm"><span className="text-slate-300">Engagement Rate</span><span className="text-accent font-semibold">{engagement.engagementRate}%</span></div>
-              <div className="flex justify-between text-sm"><span className="text-slate-300">Reply Rate</span><span className="text-white">{engagement.replyRate}%</span></div>
-              <div className="flex justify-between text-sm"><span className="text-slate-300">Avg Reply Time</span><span className="text-white">{engagement.avgReplyTime}</span></div>
-              <div className="flex justify-between text-sm"><span className="text-slate-300">Growth Estimate</span><span className="text-accent font-semibold">{engagement.growthEstimate}</span></div>
+            <div>
+              <MetricRow label="Engagement Rate" value={`${engagement.engagementRate}%`} accent />
+              <MetricRow label="Reply Rate" value={`${engagement.replyRate}%`} />
+              <MetricRow label="Avg Reply Time" value={engagement.avgReplyTime} />
+              <MetricRow label="Growth Estimate" value={engagement.growthEstimate} accent />
             </div>
-          </div>
+          </Card>
 
           {/* Content Types */}
-          <div className="glass rounded-2xl p-8">
-            <h2 className="text-xl font-bold text-white mb-6" style={{ fontFamily: 'Satoshi, sans-serif' }}>Content Type Breakdown</h2>
+          <Card>
+            <CardHeader title="Content Type Breakdown" />
             <DonutChart data={contentStrategy.contentTypes} />
-          </div>
+          </Card>
 
           {/* Posting Frequency */}
-          <div className="glass rounded-2xl p-8">
-            <h2 className="text-xl font-bold text-white mb-6" style={{ fontFamily: 'Satoshi, sans-serif' }}>Posting Frequency</h2>
+          <Card>
+            <CardHeader title="Posting Frequency" />
             <div className="text-3xl font-bold text-white mb-1">{contentStrategy.postsPerWeek}<span className="text-slate-500 text-lg font-normal"> posts/week</span></div>
             <div className="mt-4">
               <BarChart data={contentStrategy.weeklyFrequency} max={8} />
-              <p className="text-xs text-slate-500 mt-2">Posts per week — last 12 weeks</p>
+              <p className="text-xs text-slate-500 mt-3">Posts per week — last 12 weeks</p>
             </div>
-          </div>
+          </Card>
 
           {/* Content Pillars */}
-          <div className="glass rounded-2xl p-8">
-            <h2 className="text-xl font-bold text-white mb-6" style={{ fontFamily: 'Satoshi, sans-serif' }}>Content Pillars</h2>
-            <div className="space-y-3">
+          <Card>
+            <CardHeader title="Content Pillars" />
+            <div className="space-y-4">
               {contentStrategy.contentPillars.map((pillar, i) => (
                 <div key={i}>
-                  <div className="flex justify-between text-sm mb-1"><span className="text-slate-300">{pillar.topic}</span><span className="text-slate-400">{pillar.percentage}%</span></div>
-                  <div className="h-2 bg-slate-600/20 rounded-full overflow-hidden">
+                  <div className="flex justify-between text-sm mb-1.5"><span className="text-slate-300">{pillar.topic}</span><span className="text-slate-400">{pillar.percentage}%</span></div>
+                  <div className="h-2 bg-white/[0.04] rounded-full overflow-hidden">
                     <div className="h-full rounded-full bg-accent" style={{ width: `${pillar.percentage}%`, opacity: 1 - i * 0.15 }} />
                   </div>
                 </div>
               ))}
             </div>
-          </div>
+          </Card>
 
           {/* Hook Patterns */}
-          <div className="glass rounded-2xl p-8">
-            <h2 className="text-xl font-bold text-white mb-6" style={{ fontFamily: 'Satoshi, sans-serif' }}>Hook Patterns</h2>
+          <Card>
+            <CardHeader title="Hook Patterns" />
             <div className="space-y-3">
               {contentStrategy.hookPatterns.map((hook, i) => (
-                <div key={i} className="flex items-center gap-3">
-                  <div className="w-24 text-sm text-slate-300">{hook.pattern}</div>
-                  <div className="flex-1 h-6 bg-slate-600/20 rounded overflow-hidden">
-                    <div className="h-full bg-accent/60 rounded flex items-center pl-2 text-xs text-white font-medium" style={{ width: `${hook.percentage}%` }}>
+                <div key={i} className="flex items-center gap-4">
+                  <div className="w-24 text-sm text-slate-300 shrink-0">{hook.pattern}</div>
+                  <div className="flex-1 h-7 bg-white/[0.04] rounded overflow-hidden">
+                    <div className="h-full bg-accent/50 rounded flex items-center pl-3 text-xs text-white font-medium" style={{ width: `${hook.percentage}%` }}>
                       {hook.percentage}%
                     </div>
                   </div>
                 </div>
               ))}
             </div>
-          </div>
+          </Card>
         </div>
 
         {/* Top Posts */}
-        <div className="glass rounded-2xl p-8 mt-8">
-          <h2 className="text-xl font-bold text-white mb-6" style={{ fontFamily: 'Satoshi, sans-serif' }}>Top Performing Posts</h2>
-          <div className="space-y-4">
+        <Card>
+          <CardHeader title="Top Performing Posts" />
+          <div className="space-y-3">
             {contentStrategy.topPosts.map((post, i) => (
-              <div key={i} className="p-4 rounded-xl bg-navy/50 border border-slate-600/10">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1">
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-accent/10 text-accent mb-2 inline-block">{post.type}</span>
-                    <p className="text-slate-300 text-sm">&ldquo;{post.text}&rdquo;</p>
-                  </div>
-                  <div className="flex gap-4 text-xs text-slate-400 shrink-0">
-                    <span>❤️ {post.likes.toLocaleString()}</span>
-                    <span>💬 {post.comments}</span>
-                    <span>🔄 {post.shares}</span>
-                  </div>
+              <div key={i} className="flex items-start justify-between gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/[0.04]">
+                <div className="flex-1 min-w-0">
+                  <span className="text-xs px-2 py-0.5 rounded-full bg-accent/10 text-accent mb-2 inline-block">{post.type}</span>
+                  <p className="text-slate-300 text-sm leading-relaxed">&ldquo;{post.text}&rdquo;</p>
+                </div>
+                <div className="flex gap-4 text-xs text-slate-400 shrink-0 pt-1">
+                  <span>❤️ {post.likes.toLocaleString()}</span>
+                  <span>💬 {post.comments}</span>
+                  <span>🔄 {post.shares}</span>
                 </div>
               </div>
             ))}
           </div>
-        </div>
+        </Card>
 
-        {/* Hashtags */}
-        <div className="grid md:grid-cols-2 gap-8 mt-8">
-          <div className="glass rounded-2xl p-8">
-            <h2 className="text-xl font-bold text-white mb-6" style={{ fontFamily: 'Satoshi, sans-serif' }}>Hashtag Strategy</h2>
-            <div className="text-sm text-slate-400 mb-3">Average {contentStrategy.hashtagStrategy.avg} hashtags per post</div>
+        {/* Hashtags + Schedule */}
+        <div className="grid md:grid-cols-2 gap-6">
+          <Card>
+            <CardHeader title="Hashtag Strategy" subtitle={`Average ${contentStrategy.hashtagStrategy.avg} hashtags per post`} />
             <div className="flex flex-wrap gap-2">
               {contentStrategy.hashtagStrategy.topHashtags.map((tag, i) => (
-                <span key={i} className="px-3 py-1.5 rounded-lg bg-accent/10 text-accent text-sm">{tag}</span>
+                <span key={i} className="px-3 py-1.5 rounded-lg bg-accent/10 text-accent text-sm border border-accent/10">{tag}</span>
               ))}
             </div>
-          </div>
+          </Card>
 
-          {/* Posting Schedule */}
-          <div className="glass rounded-2xl p-8">
-            <h2 className="text-xl font-bold text-white mb-6" style={{ fontFamily: 'Satoshi, sans-serif' }}>Posting Schedule</h2>
+          <Card>
+            <CardHeader title="Posting Schedule" />
             <HeatmapGrid data={contentStrategy.postingSchedule} />
-          </div>
+          </Card>
         </div>
 
         {/* Back */}
-        <div className="mt-12 text-center">
-          <button onClick={() => { setAudit(null); setUrl(""); }} className="text-slate-400 hover:text-white transition-colors text-sm">
+        <div className="text-center pt-4">
+          <button onClick={() => { setAudit(null); setUrl(""); }} className="text-slate-500 hover:text-white transition-colors text-sm">
             ← Audit another profile
           </button>
         </div>
