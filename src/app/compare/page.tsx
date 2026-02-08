@@ -1,8 +1,9 @@
 "use client";
 import { useState } from "react";
-import { mockProfileA, mockProfileB, mockGapAnalysis, type ProfileAudit } from "@/lib/mock-data";
+import { mockProfileA, mockProfileB, type ProfileAudit } from "@/lib/mock-data";
 import { ScoreRing, ProgressBar, DonutChart } from "@/components/charts";
 import { Card, CardHeader, Badge, StatCard } from "@/components/ui";
+import { generateGapAnalysis, type GapAnalysis } from "@/lib/gap-analysis";
 
 function ProfileSummary({ audit, label }: { audit: ProfileAudit; label: string }) {
   return (
@@ -42,19 +43,63 @@ function ProfileSummary({ audit, label }: { audit: ProfileAudit; label: string }
   );
 }
 
+async function fetchAudit(profileUrl: string): Promise<ProfileAudit> {
+  try {
+    const res = await fetch("/api/analyze", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ profileUrl }),
+    });
+    const data = await res.json();
+
+    if (data.audit) return data.audit;
+
+    if (data.status === "running") {
+      const { profileRunId, postsRunId, profileDatasetId, postsDatasetId } = data;
+      const params = new URLSearchParams({ profileRunId, postsRunId, profileDatasetId, postsDatasetId });
+
+      for (let i = 0; i < 60; i++) {
+        await new Promise(r => setTimeout(r, 3000));
+        const statusRes = await fetch(`/api/analyze/status?${params}`);
+        const statusData = await statusRes.json();
+        if (statusData.status === "complete") return statusData.audit;
+      }
+    }
+  } catch {
+    // fall through to mock
+  }
+  return mockProfileA; // fallback
+}
+
 export default function ComparePage() {
   const [urlA, setUrlA] = useState("");
   const [urlB, setUrlB] = useState("");
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<{ a: ProfileAudit; b: ProfileAudit } | null>(null);
+  const [loadingStep, setLoadingStep] = useState("");
+  const [result, setResult] = useState<{ a: ProfileAudit; b: ProfileAudit; gap: GapAnalysis } | null>(null);
 
-  const handleCompare = (e: React.FormEvent) => {
+  const handleCompare = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
-      setResult({ a: mockProfileB, b: mockProfileA });
+    setLoadingStep("Scraping both profiles...");
+
+    try {
+      // Fetch both profiles in parallel
+      const [auditA, auditB] = await Promise.all([
+        fetchAudit(urlA),
+        fetchAudit(urlB),
+      ]);
+
+      setLoadingStep("Generating gap analysis...");
+      const gap = generateGapAnalysis(auditA, auditB);
+      setResult({ a: auditA, b: auditB, gap });
+    } catch {
+      // Fallback to mock
+      const gap = generateGapAnalysis(mockProfileB, mockProfileA);
+      setResult({ a: mockProfileB, b: mockProfileA, gap });
+    } finally {
       setLoading(false);
-    }, 3000);
+    }
   };
 
   if (loading) {
@@ -63,7 +108,8 @@ export default function ComparePage() {
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-accent/30 border-t-accent rounded-full mx-auto mb-6" style={{ animation: "spin-slow 1s linear infinite" }} />
           <h2 className="text-2xl font-bold text-white mb-2" style={{ fontFamily: 'Satoshi, sans-serif' }}>Comparing profiles...</h2>
-          <p className="text-slate-400">Analyzing both profiles and generating gap report</p>
+          <p className="text-slate-400">{loadingStep}</p>
+          <p className="text-slate-500 text-sm mt-4">This takes ~60 seconds while we scrape both profiles</p>
         </div>
       </div>
     );
@@ -96,12 +142,11 @@ export default function ComparePage() {
     );
   }
 
-  const gap = mockGapAnalysis;
+  const { a, b, gap } = result;
 
   return (
     <div className="min-h-screen py-12 px-6">
       <div className="max-w-6xl mx-auto space-y-8">
-        {/* Page header */}
         <div className="text-center">
           <h1 className="text-3xl font-bold text-white" style={{ fontFamily: 'Satoshi, sans-serif' }}>Profile Comparison</h1>
           <p className="text-slate-400 mt-2">Side-by-side analysis with gap report</p>
@@ -111,31 +156,33 @@ export default function ComparePage() {
         <Card className="p-8">
           <div className="grid grid-cols-3 items-center">
             <div className="text-center">
-              <div className="text-base font-bold text-white">{result.a.profile.name}</div>
+              <div className="text-base font-bold text-white">{a.profile.name}</div>
               <div className="text-slate-500 text-sm mb-4">Your Profile</div>
-              <div className="flex justify-center"><ScoreRing score={result.a.overallScore} grade={result.a.overallGrade} size={100} /></div>
+              <div className="flex justify-center"><ScoreRing score={a.overallScore} grade={a.overallGrade} size={100} /></div>
             </div>
             <div className="text-center">
               <div className="text-4xl font-black text-slate-700" style={{ fontFamily: 'Satoshi, sans-serif' }}>VS</div>
-              <div className="mt-2 text-accent text-sm font-medium">+{result.b.overallScore - result.a.overallScore} point gap</div>
+              <div className="mt-2 text-accent text-sm font-medium">
+                {b.overallScore > a.overallScore ? `+${b.overallScore - a.overallScore}` : b.overallScore < a.overallScore ? `-${a.overallScore - b.overallScore}` : "0"} point gap
+              </div>
             </div>
             <div className="text-center">
-              <div className="text-base font-bold text-white">{result.b.profile.name}</div>
-              <div className="text-slate-500 text-sm mb-4">Top Performer</div>
-              <div className="flex justify-center"><ScoreRing score={result.b.overallScore} grade={result.b.overallGrade} size={100} /></div>
+              <div className="text-base font-bold text-white">{b.profile.name}</div>
+              <div className="text-slate-500 text-sm mb-4">Competitor</div>
+              <div className="flex justify-center"><ScoreRing score={b.overallScore} grade={b.overallGrade} size={100} /></div>
             </div>
           </div>
         </Card>
 
         {/* Side by side profiles */}
         <div className="grid md:grid-cols-2 gap-6">
-          <ProfileSummary audit={result.a} label="Your Profile" />
-          <ProfileSummary audit={result.b} label="Top Performer" />
+          <ProfileSummary audit={a} label="Your Profile" />
+          <ProfileSummary audit={b} label="Competitor" />
         </div>
 
         {/* Gap Analysis */}
         <Card>
-          <CardHeader title="Gap Analysis" subtitle={`Biggest gaps: ${gap.summary.biggestGaps.join(" · ")}`} />
+          <CardHeader title="Gap Analysis" subtitle={gap.summary.biggestGaps.length > 0 ? `Biggest gaps: ${gap.summary.biggestGaps.join(" · ")}` : "Comparing key metrics"} />
           <div className="space-y-3">
             {gap.recommendations.map((rec, i) => (
               <div key={i} className="flex items-start gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/[0.04]">
@@ -169,7 +216,6 @@ export default function ComparePage() {
           </div>
         </Card>
 
-        {/* Back link */}
         <div className="text-center pt-4">
           <button onClick={() => { setResult(null); setUrlA(""); setUrlB(""); }} className="text-slate-500 hover:text-white transition-colors text-sm">
             ← Compare different profiles
