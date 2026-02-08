@@ -39,6 +39,59 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Sample Audit */}
+      <section className="py-20 px-6 md:px-8 section-divider">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-12">
+            <span className="text-accent font-mono text-sm font-semibold tracking-wider uppercase">See a Real Audit</span>
+            <h2 className="text-3xl md:text-5xl font-bold text-white mt-4" style={{ fontFamily: 'Satoshi, sans-serif' }}>What you&apos;ll get</h2>
+          </div>
+          <Card className="relative overflow-hidden">
+            <span className="absolute top-4 right-4 text-[10px] font-semibold uppercase tracking-widest text-accent/60 bg-accent/10 px-3 py-1 rounded-full border border-accent/10">Sample Audit</span>
+            <div className="flex flex-col md:flex-row gap-8 items-start">
+              {/* Left: Score + Stats */}
+              <div className="flex flex-col items-center gap-4 md:w-56 shrink-0">
+                <div className="w-14 h-14 rounded-full bg-accent/20 flex items-center justify-center text-accent text-xl font-bold">{mockProfileA.profile.name.charAt(0)}</div>
+                <h3 className="text-lg font-bold text-white" style={{ fontFamily: 'Satoshi, sans-serif' }}>{mockProfileA.profile.name}</h3>
+                <ScoreRing score={mockProfileA.overallScore} grade={mockProfileA.overallGrade} size={110} />
+                <div className="grid grid-cols-1 gap-2 text-sm w-full mt-2">
+                  <div className="flex justify-between"><span className="text-slate-400">Followers</span><span className="text-white font-semibold">{mockProfileA.profile.followers.toLocaleString()}</span></div>
+                  <div className="flex justify-between"><span className="text-slate-400">Eng. Rate</span><span className="text-white font-semibold">{mockProfileA.engagement.engagementRate}%</span></div>
+                  <div className="flex justify-between"><span className="text-slate-400">Posts/wk</span><span className="text-white font-semibold">{mockProfileA.contentStrategy.postsPerWeek}</span></div>
+                </div>
+              </div>
+              {/* Right: Breakdown + Top Posts */}
+              <div className="flex-1 min-w-0 space-y-6">
+                <div>
+                  <h4 className="text-sm font-semibold text-white mb-4">Score Breakdown</h4>
+                  <div className="space-y-3">
+                    {mockProfileA.breakdown.map((b, i) => (
+                      <ProgressBar key={i} value={b.score} max={b.max} label={b.category} color={b.score >= 80 ? "#10b981" : b.score >= 60 ? "#3b82f6" : b.score >= 40 ? "#f59e0b" : "#ef4444"} />
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <h4 className="text-sm font-semibold text-white mb-3">Top Posts</h4>
+                  <div className="space-y-2">
+                    {mockProfileA.contentStrategy.topPosts.slice(0, 3).map((post, i) => (
+                      <div key={i} className="flex items-start justify-between gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.04]">
+                        <p className="text-slate-300 text-xs leading-relaxed flex-1 min-w-0 truncate">&ldquo;{post.text}&rdquo;</p>
+                        <span className="text-[10px] text-slate-500 shrink-0">❤️ {post.likes.toLocaleString()}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="pt-2">
+                  <a href="/audit" className="bg-accent hover:bg-accent-dim text-navy font-bold px-6 py-3 rounded-xl text-sm transition-all hover:scale-[1.02] inline-block">
+                    Run your own audit — free
+                  </a>
+                </div>
+              </div>
+            </div>
+          </Card>
+        </div>
+      </section>
+
       {/* Problem */}
       <section className="py-28 px-6 md:px-8 section-divider">
         <div className="max-w-5xl mx-auto">
