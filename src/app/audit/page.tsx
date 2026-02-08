@@ -1,13 +1,18 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { mockProfileA, type ProfileAudit } from "@/lib/mock-data";
 import { DonutChart, BarChart, HeatmapGrid, ScoreRing, ProgressBar, RadarChart } from "@/components/charts";
 import { Card, CardHeader, StatCard, MetricRow } from "@/components/ui";
+import { storeAudit } from "@/lib/convex";
+import Captcha from "@/components/Captcha";
 
 export default function AuditPage() {
+  const router = useRouter();
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [audit, setAudit] = useState<ProfileAudit | null>(null);
+  const [captchaToken, setCaptchaToken] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,9 +27,24 @@ export default function AuditPage() {
       const data = await res.json();
 
       if (data.audit) {
-        setAudit(data.audit);
-        setLoading(false);
-        return;
+        // Save to Convex and redirect to shareable URL
+        try {
+          const id = await storeAudit({
+            profileUrl: url,
+            profileName: data.audit.profile.name,
+            auditData: JSON.stringify(data.audit),
+            source: data.source || "mock",
+            overallScore: data.audit.overallScore,
+            overallGrade: data.audit.overallGrade,
+          });
+          router.push(`/audit/${id}`);
+          return;
+        } catch {
+          // If Convex save fails, show inline
+          setAudit(data.audit);
+          setLoading(false);
+          return;
+        }
       }
 
       if (data.status === "running") {
@@ -38,9 +58,22 @@ export default function AuditPage() {
           const statusData = await statusRes.json();
 
           if (statusData.status === "complete") {
-            setAudit(statusData.audit);
-            setLoading(false);
-            return;
+            try {
+              const id = await storeAudit({
+                profileUrl: url,
+                profileName: statusData.audit.profile.name,
+                auditData: JSON.stringify(statusData.audit),
+                source: statusData.source || "live",
+                overallScore: statusData.audit.overallScore,
+                overallGrade: statusData.audit.overallGrade,
+              });
+              router.push(`/audit/${id}`);
+              return;
+            } catch {
+              setAudit(statusData.audit);
+              setLoading(false);
+              return;
+            }
           }
         }
       }
@@ -83,8 +116,9 @@ export default function AuditPage() {
           <form onSubmit={handleSubmit} className="flex gap-3">
             <input type="url" required placeholder="https://linkedin.com/in/username" value={url} onChange={(e) => setUrl(e.target.value)}
               className="flex-1 bg-white/[0.03] border border-white/[0.08] rounded-xl px-5 py-4 text-white placeholder:text-slate-600 focus:outline-none focus:border-accent/40 transition-colors text-lg" />
-            <button type="submit" className="bg-accent hover:bg-accent-dim text-navy font-bold px-8 py-4 rounded-xl text-lg transition-colors whitespace-nowrap">Analyze</button>
+            <button type="submit" disabled={!captchaToken} className="bg-accent hover:bg-accent-dim disabled:opacity-40 disabled:cursor-not-allowed text-navy font-bold px-8 py-4 rounded-xl text-lg transition-colors whitespace-nowrap">Analyze</button>
           </form>
+          <Captcha onVerify={setCaptchaToken} />
           <p className="text-slate-500 text-sm mt-4">Try it with any LinkedIn URL — we&apos;ll show a demo audit</p>
         </div>
       </div>

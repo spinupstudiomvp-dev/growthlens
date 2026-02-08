@@ -2,31 +2,31 @@ import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
 export default defineSchema({
-  profiles: defineTable({
-    linkedinUrl: v.string(),
-    name: v.string(),
-    headline: v.string(),
-    profileData: v.any(),
-    scrapedAt: v.number(),
-  }).index("by_url", ["linkedinUrl"]),
-
-  analyses: defineTable({
-    profileId: v.id("profiles"),
-    auditData: v.any(),
-    score: v.number(),
-    grade: v.string(),
+  audits: defineTable({
+    profileUrl: v.string(),
+    profileName: v.string(),
+    auditData: v.string(), // JSON stringified ProfileAudit
+    source: v.string(), // "live" | "mock"
+    email: v.optional(v.string()),
+    overallScore: v.number(),
+    overallGrade: v.string(),
     createdAt: v.number(),
-  }).index("by_profile", ["profileId"]),
+  })
+    .index("by_profileUrl", ["profileUrl"])
+    .index("by_email", ["email"])
+    .index("by_createdAt", ["createdAt"]),
 
   comparisons: defineTable({
-    profileA: v.id("profiles"),
-    profileB: v.id("profiles"),
-    gapAnalysis: v.any(),
+    profileUrlA: v.string(),
+    profileUrlB: v.string(),
+    profileNameA: v.string(),
+    profileNameB: v.string(),
+    auditDataA: v.string(),
+    auditDataB: v.string(),
+    gapAnalysis: v.string(), // JSON stringified GapAnalysis
+    email: v.optional(v.string()),
     createdAt: v.number(),
-  }),
-
-  waitlist: defineTable({
-    email: v.string(),
-    createdAt: v.number(),
-  }).index("by_email", ["email"]),
+  })
+    .index("by_createdAt", ["createdAt"])
+    .index("by_email", ["email"]),
 });

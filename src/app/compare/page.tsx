@@ -1,9 +1,12 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { mockProfileA, mockProfileB, type ProfileAudit } from "@/lib/mock-data";
 import { ScoreRing, ProgressBar, DonutChart } from "@/components/charts";
 import { Card, CardHeader, Badge, StatCard } from "@/components/ui";
 import { generateGapAnalysis, type GapAnalysis } from "@/lib/gap-analysis";
+import { storeComparison } from "@/lib/convex";
+import Captcha from "@/components/Captcha";
 
 function ProfileSummary({ audit, label }: { audit: ProfileAudit; label: string }) {
   return (
@@ -74,9 +77,11 @@ async function fetchAudit(profileUrl: string): Promise<ProfileAudit> {
 export default function ComparePage() {
   const [urlA, setUrlA] = useState("");
   const [urlB, setUrlB] = useState("");
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [loadingStep, setLoadingStep] = useState("");
   const [result, setResult] = useState<{ a: ProfileAudit; b: ProfileAudit; gap: GapAnalysis } | null>(null);
+  const [captchaToken, setCaptchaToken] = useState("");
 
   const handleCompare = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -92,9 +97,24 @@ export default function ComparePage() {
 
       setLoadingStep("Generating gap analysis...");
       const gap = generateGapAnalysis(auditA, auditB);
-      setResult({ a: auditA, b: auditB, gap });
+
+      // Save to Convex and redirect
+      try {
+        const id = await storeComparison({
+          profileUrlA: urlA,
+          profileUrlB: urlB,
+          profileNameA: auditA.profile.name,
+          profileNameB: auditB.profile.name,
+          auditDataA: JSON.stringify(auditA),
+          auditDataB: JSON.stringify(auditB),
+          gapAnalysis: JSON.stringify(gap),
+        });
+        router.push(`/compare/${id}`);
+        return;
+      } catch {
+        setResult({ a: auditA, b: auditB, gap });
+      }
     } catch {
-      // Fallback to mock
       const gap = generateGapAnalysis(mockProfileB, mockProfileA);
       setResult({ a: mockProfileB, b: mockProfileA, gap });
     } finally {
@@ -133,7 +153,8 @@ export default function ComparePage() {
               <input type="url" required placeholder="https://linkedin.com/in/competitor" value={urlB} onChange={(e) => setUrlB(e.target.value)}
                 className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-5 py-4 text-white placeholder:text-slate-600 focus:outline-none focus:border-accent/40 transition-colors" />
             </div>
-            <button type="submit" className="w-full bg-accent hover:bg-accent-dim text-navy font-bold px-8 py-4 rounded-xl text-lg transition-colors mt-2">
+            <Captcha onVerify={setCaptchaToken} />
+            <button type="submit" disabled={!captchaToken} className="w-full bg-accent hover:bg-accent-dim disabled:opacity-40 disabled:cursor-not-allowed text-navy font-bold px-8 py-4 rounded-xl text-lg transition-colors mt-2">
               Compare Profiles
             </button>
           </form>
