@@ -129,6 +129,7 @@ export default function AuditPage() {
     try {
       const userId = localStorage.getItem("gl_user_id");
       const handle = url.replace(/^@/, "").replace(/https?:\/\/(x\.com|twitter\.com)\//, "").replace(/\/.*$/, "").trim();
+      console.log("[GL] Starting Twitter audit for @" + handle);
       const res = await fetch("/api/twitter/audit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -136,14 +137,20 @@ export default function AuditPage() {
       });
       const data = await res.json();
       if (data.success) {
-        // TODO: Transform Twitter data into ProfileAudit format and display
-        console.log("[GL] Twitter audit data:", data);
-        alert("Twitter audit data received! Full scoring coming soon.");
+        console.log("[GL] Twitter audit complete! Score:", data.audit?.overallScore);
+        if (data.auditId) {
+          router.push(`/audit/${data.auditId}`);
+          return;
+        }
+        // Fallback: render inline
+        setAudit(data.audit);
       } else {
         console.error("[GL] Twitter audit failed:", data.error);
+        alert("Audit failed: " + (data.error || "Unknown error"));
       }
     } catch (err) {
       console.error("[GL] Twitter audit error:", err);
+      alert("Something went wrong. Check console for details.");
     }
     setLoading(false);
   };
@@ -159,9 +166,12 @@ export default function AuditPage() {
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-accent/30 border-t-accent rounded-full mx-auto mb-6" style={{ animation: "spin-slow 1s linear infinite" }} />
           <h2 className="text-2xl font-bold text-white mb-2" style={{ fontFamily: 'Satoshi, sans-serif' }}>Analyzing profile...</h2>
-          <p className="text-slate-400">Scraping posts, analyzing patterns, generating insights</p>
+          <p className="text-slate-400">{platform === "twitter" ? "Fetching tweets, analyzing patterns, generating insights" : "Scraping posts, analyzing patterns, generating insights"}</p>
           <div className="mt-8 space-y-3 max-w-xs mx-auto text-left">
-            {["Fetching profile data", "Scraping recent posts", "Analyzing content patterns", "Generating audit report"].map((step, i) => (
+            {(platform === "twitter"
+              ? ["Connecting to X API", "Fetching recent tweets", "Analyzing content patterns", "Generating audit report"]
+              : ["Fetching profile data", "Scraping recent posts", "Analyzing content patterns", "Generating audit report"]
+            ).map((step, i) => (
               <div key={i} className="flex items-center gap-3 text-sm text-slate-400 animate-fade-in" style={{ animationDelay: `${i * 0.6}s` }}>
                 <span className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center"><span className="w-2 h-2 rounded-full bg-accent" /></span>
                 {step}

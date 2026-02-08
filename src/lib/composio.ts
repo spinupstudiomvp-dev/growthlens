@@ -112,9 +112,15 @@ export async function fetchTwitterProfile(
   connectedAccountId: string,
   username: string
 ) {
-  // Look up user by username
   const userData = await executeTool(connectedAccountId, 'TWITTER_USER_LOOKUP_BY_USERNAMES', {
-    usernames: username,
+    usernames: [username.replace('@', '')],
+    user_fields: [
+      'created_at', 'description', 'profile_image_url', 'profile_banner_url',
+      'public_metrics', 'verified', 'verified_type', 'location', 'url',
+      'pinned_tweet_id', 'most_recent_tweet_id'
+    ],
+    expansions: ['pinned_tweet_id'],
+    tweet_fields: ['created_at', 'public_metrics', 'text'],
   });
 
   return userData;
@@ -124,11 +130,19 @@ export async function fetchTwitterProfile(
 export async function searchTwitterPosts(
   connectedAccountId: string,
   username: string,
-  maxResults: number = 50
+  maxResults: number = 100
 ) {
   const searchData = await executeTool(connectedAccountId, 'TWITTER_RECENT_SEARCH', {
-    query: `from:${username}`,
+    query: `from:${username.replace('@', '')} -is:retweet -is:reply`,
     max_results: Math.min(maxResults, 100),
+    sort_order: 'recency',
+    tweet_fields: [
+      'created_at', 'public_metrics', 'text', 'entities',
+      'attachments', 'referenced_tweets', 'conversation_id', 'source'
+    ],
+    expansions: ['attachments.media_keys', 'author_id'],
+    media_fields: ['type', 'url', 'preview_image_url'],
+    user_fields: ['public_metrics', 'username', 'name'],
   });
 
   return searchData;
@@ -136,5 +150,10 @@ export async function searchTwitterPosts(
 
 // Get the authenticated user's own profile
 export async function getTwitterMe(connectedAccountId: string) {
-  return executeTool(connectedAccountId, 'TWITTER_USER_LOOKUP_ME', {});
+  return executeTool(connectedAccountId, 'TWITTER_USER_LOOKUP_ME', {
+    user_fields: [
+      'created_at', 'description', 'profile_image_url', 'profile_banner_url',
+      'public_metrics', 'verified', 'location', 'url'
+    ],
+  });
 }
