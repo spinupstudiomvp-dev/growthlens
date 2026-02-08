@@ -21,3 +21,17 @@
 - API key provisioned per account, or separate developer keys?
 - MCP hosted by us or self-hostable?
 - Should agents be able to trigger re-scrapes on demand or only consume scheduled audit data?
+
+## Social Proof: Audit Snippets on Landing Page
+**Priority:** High
+**Description:** Show small snippets/cards from previously audited accounts on the landing page. Real scores, real names (with permission via positive feedback). Adds authenticity — visitors see real audits, not just mock data.
+
+## Feedback + Testimonials System
+**Priority:** High
+**Description:** After an audit completes, prompt user for feedback. Two paths:
+
+**Positive feedback →** Triggers a testimonial request (short text). Auto-added to a testimonials list shown on landing page. Stored in Convex.
+
+**Negative feedback →** Saves as a ticket. Triggers a task for Orión to investigate and fix. If human input needed, message Matt. Stored in Convex with status tracking (open/investigating/fixed).
+
+See full spec: `specs/feedback-testimonials.md`
