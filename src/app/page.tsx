@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
-import { Card } from "@/components/ui";
+import { Card, CardHeader } from "@/components/ui";
+import { mockProfileA } from "@/lib/mock-data";
+import { ScoreRing, ProgressBar } from "@/components/charts";
 
 export default function Home() {
   const [email, setEmail] = useState("");

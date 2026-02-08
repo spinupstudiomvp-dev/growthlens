@@ -3,9 +3,44 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { mockProfileA, type ProfileAudit } from "@/lib/mock-data";
 import { DonutChart, BarChart, HeatmapGrid, ScoreRing, ProgressBar, RadarChart } from "@/components/charts";
-import { Card, CardHeader, StatCard, MetricRow } from "@/components/ui";
-import { storeAudit } from "@/lib/convex";
+import { Card, CardHeader, StatCard, MetricRow, Badge } from "@/components/ui";
+import { generateRecommendations } from "@/lib/recommendations";
+import { storeAudit, updateAuditEmail } from "@/lib/convex";
 import Captcha from "@/components/Captcha";
+
+function EmailGate({ profileName, score, grade, auditId, onSkip }: { profileName: string; score: number; grade: string; auditId: string; onSkip: () => void }) {
+  const [email, setEmail] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    try { await updateAuditEmail(auditId, email); } catch {}
+    onSkip();
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-6">
+      <div className="rounded-2xl border border-white/[0.06] bg-gradient-to-br from-[#111827]/95 to-[#0f1423]/90 backdrop-blur-xl p-8 max-w-md w-full text-center">
+        <div className="w-16 h-16 rounded-full bg-accent/20 flex items-center justify-center text-accent text-2xl font-bold mx-auto mb-4">{profileName.charAt(0)}</div>
+        <h2 className="text-xl font-bold text-white mb-1" style={{ fontFamily: 'Satoshi, sans-serif' }}>{profileName}</h2>
+        <div className="flex items-center justify-center gap-3 mb-6">
+          <span className="text-4xl font-black text-white">{score}</span>
+          <span className="text-lg font-bold text-accent">{grade}</span>
+        </div>
+        <p className="text-slate-400 text-sm mb-6">Enter your email to see your full audit report</p>
+        <form onSubmit={handleSubmit} className="space-y-3">
+          <input type="email" required placeholder="you@company.com" value={email} onChange={(e) => setEmail(e.target.value)}
+            className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-5 py-3.5 text-white placeholder:text-slate-600 focus:outline-none focus:border-accent/40 transition-colors" />
+          <button type="submit" disabled={submitting} className="w-full bg-accent hover:bg-accent-dim disabled:opacity-60 text-navy font-bold px-6 py-3.5 rounded-xl transition-colors">
+            {submitting ? "Saving..." : "See Full Report"}
+          </button>
+        </form>
+        <button onClick={onSkip} className="text-slate-500 hover:text-slate-300 text-xs mt-4 transition-colors">Skip for now →</button>
+      </div>
+    </div>
+  );
+}
 
 export default function AuditPage() {
   const router = useRouter();
@@ -13,6 +48,7 @@ export default function AuditPage() {
   const [loading, setLoading] = useState(false);
   const [audit, setAudit] = useState<ProfileAudit | null>(null);
   const [captchaToken, setCaptchaToken] = useState("");
+  const [emailGate, setEmailGate] = useState<{ profileName: string; score: number; grade: string; auditId: string } | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,7 +63,6 @@ export default function AuditPage() {
       const data = await res.json();
 
       if (data.audit) {
-        // Save to Convex and redirect to shareable URL
         try {
           const id = await storeAudit({
             profileUrl: url,
@@ -37,10 +72,10 @@ export default function AuditPage() {
             overallScore: data.audit.overallScore,
             overallGrade: data.audit.overallGrade,
           });
-          router.push(`/audit/${id}`);
+          setLoading(false);
+          setEmailGate({ profileName: data.audit.profile.name, score: data.audit.overallScore, grade: data.audit.overallGrade, auditId: id });
           return;
         } catch {
-          // If Convex save fails, show inline
           setAudit(data.audit);
           setLoading(false);
           return;
@@ -67,7 +102,8 @@ export default function AuditPage() {
                 overallScore: statusData.audit.overallScore,
                 overallGrade: statusData.audit.overallGrade,
               });
-              router.push(`/audit/${id}`);
+              setLoading(false);
+              setEmailGate({ profileName: statusData.audit.profile.name, score: statusData.audit.overallScore, grade: statusData.audit.overallGrade, auditId: id });
               return;
             } catch {
               setAudit(statusData.audit);
@@ -86,6 +122,10 @@ export default function AuditPage() {
       setLoading(false);
     }
   };
+
+  if (emailGate) {
+    return <EmailGate {...emailGate} onSkip={() => router.push(`/audit/${emailGate.auditId}`)} />;
+  }
 
   if (loading) {
     return (
@@ -126,6 +166,7 @@ export default function AuditPage() {
   }
 
   const { profile, contentStrategy, engagement } = audit;
+  const { recommendations, summary } = generateRecommendations(audit);
 
   return (
     <div className="min-h-screen py-12 px-6">
@@ -267,6 +308,46 @@ export default function AuditPage() {
             </div>
           </Card>
         </div>
+
+        {/* Recommendations */}
+        {recommendations.length > 0 && (
+          <Card>
+            <CardHeader title="Recommendations" subtitle={summary.topAreas.length > 0 ? `Focus areas: ${summary.topAreas.join(" · ")}` : "Your profile is in great shape!"} />
+            <div className="space-y-3">
+              {recommendations.map((rec, i) => (
+                <div key={i} className="flex items-start gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/[0.04]">
+                  <div className="shrink-0 pt-0.5">
+                    <Badge variant={rec.priority.toLowerCase() as "critical" | "high" | "medium" | "low"}>
+                      {rec.priority}
+                    </Badge>
+                  </div>
+                  <p className="flex-1 text-sm text-slate-300 leading-relaxed">{rec.action}</p>
+                  <div className="shrink-0 text-right pl-4">
+                    <div className="text-[11px] text-slate-500 uppercase tracking-wider">Impact</div>
+                    <div className="text-accent font-bold">{rec.impact}%</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Card>
+        )}
+
+        {/* Action Playbook */}
+        {recommendations.filter(r => r.priority === "Critical" || r.priority === "High").length > 0 && (
+          <Card>
+            <CardHeader title="🎯 Your Action Playbook" subtitle="Prioritized by impact. Start from the top." />
+            <div className="space-y-3">
+              {recommendations
+                .filter(r => r.priority === "Critical" || r.priority === "High")
+                .map((rec, i) => (
+                  <div key={i} className="flex items-start gap-4 p-4 rounded-xl bg-accent/[0.04] border border-accent/[0.08]">
+                    <span className="text-accent font-bold text-lg leading-none mt-0.5 w-6 shrink-0">{i + 1}.</span>
+                    <p className="text-sm text-slate-300 leading-relaxed">{rec.action}</p>
+                  </div>
+                ))}
+            </div>
+          </Card>
+        )}
 
         {/* Top Posts */}
         <Card>

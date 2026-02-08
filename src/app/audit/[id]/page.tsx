@@ -3,7 +3,8 @@ import { useEffect, useState, use } from "react";
 import { getAudit } from "@/lib/convex";
 import type { ProfileAudit } from "@/lib/mock-data";
 import { DonutChart, BarChart, HeatmapGrid, ScoreRing, ProgressBar, RadarChart } from "@/components/charts";
-import { Card, CardHeader, StatCard, MetricRow } from "@/components/ui";
+import { Card, CardHeader, StatCard, MetricRow, Badge } from "@/components/ui";
+import { generateRecommendations } from "@/lib/recommendations";
 
 export default function SavedAuditPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -43,6 +44,7 @@ export default function SavedAuditPage({ params }: { params: Promise<{ id: strin
   }
 
   const { profile, contentStrategy, engagement } = audit;
+  const { recommendations, summary } = generateRecommendations(audit);
 
   return (
     <div className="min-h-screen py-12 px-6">
@@ -129,6 +131,46 @@ export default function SavedAuditPage({ params }: { params: Promise<{ id: strin
             </div>
           </Card>
         </div>
+
+        {/* Recommendations */}
+        {recommendations.length > 0 && (
+          <Card>
+            <CardHeader title="Recommendations" subtitle={summary.topAreas.length > 0 ? `Focus areas: ${summary.topAreas.join(" · ")}` : "Your profile is in great shape!"} />
+            <div className="space-y-3">
+              {recommendations.map((rec, i) => (
+                <div key={i} className="flex items-start gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/[0.04]">
+                  <div className="shrink-0 pt-0.5">
+                    <Badge variant={rec.priority.toLowerCase() as "critical" | "high" | "medium" | "low"}>
+                      {rec.priority}
+                    </Badge>
+                  </div>
+                  <p className="flex-1 text-sm text-slate-300 leading-relaxed">{rec.action}</p>
+                  <div className="shrink-0 text-right pl-4">
+                    <div className="text-[11px] text-slate-500 uppercase tracking-wider">Impact</div>
+                    <div className="text-accent font-bold">{rec.impact}%</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Card>
+        )}
+
+        {/* Action Playbook */}
+        {recommendations.filter(r => r.priority === "Critical" || r.priority === "High").length > 0 && (
+          <Card>
+            <CardHeader title="🎯 Your Action Playbook" subtitle="Prioritized by impact. Start from the top." />
+            <div className="space-y-3">
+              {recommendations
+                .filter(r => r.priority === "Critical" || r.priority === "High")
+                .map((rec, i) => (
+                  <div key={i} className="flex items-start gap-4 p-4 rounded-xl bg-accent/[0.04] border border-accent/[0.08]">
+                    <span className="text-accent font-bold text-lg leading-none mt-0.5 w-6 shrink-0">{i + 1}.</span>
+                    <p className="text-sm text-slate-300 leading-relaxed">{rec.action}</p>
+                  </div>
+                ))}
+            </div>
+          </Card>
+        )}
 
         <Card>
           <CardHeader title="Top Performing Posts" />

@@ -5,8 +5,49 @@ import { mockProfileA, mockProfileB, type ProfileAudit } from "@/lib/mock-data";
 import { ScoreRing, ProgressBar, DonutChart } from "@/components/charts";
 import { Card, CardHeader, Badge, StatCard } from "@/components/ui";
 import { generateGapAnalysis, type GapAnalysis } from "@/lib/gap-analysis";
-import { storeComparison } from "@/lib/convex";
+import { storeComparison, updateComparisonEmail } from "@/lib/convex";
 import Captcha from "@/components/Captcha";
+
+function CompareEmailGate({ nameA, nameB, scoreA, scoreB, gradeA, gradeB, comparisonId, onSkip }: { nameA: string; nameB: string; scoreA: number; scoreB: number; gradeA: string; gradeB: string; comparisonId: string; onSkip: () => void }) {
+  const [email, setEmail] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    try { await updateComparisonEmail(comparisonId, email); } catch {}
+    onSkip();
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-6">
+      <div className="rounded-2xl border border-white/[0.06] bg-gradient-to-br from-[#111827]/95 to-[#0f1423]/90 backdrop-blur-xl p-8 max-w-md w-full text-center">
+        <div className="flex items-center justify-center gap-4 mb-4">
+          <div className="text-center">
+            <div className="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center text-accent font-bold mx-auto mb-1">{nameA.charAt(0)}</div>
+            <span className="text-white text-sm font-semibold">{scoreA}</span>
+            <span className="text-accent text-xs ml-1">{gradeA}</span>
+          </div>
+          <span className="text-slate-600 font-bold text-lg">vs</span>
+          <div className="text-center">
+            <div className="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center text-accent font-bold mx-auto mb-1">{nameB.charAt(0)}</div>
+            <span className="text-white text-sm font-semibold">{scoreB}</span>
+            <span className="text-accent text-xs ml-1">{gradeB}</span>
+          </div>
+        </div>
+        <p className="text-slate-400 text-sm mb-6">Enter your email to see the full comparison & gap analysis</p>
+        <form onSubmit={handleSubmit} className="space-y-3">
+          <input type="email" required placeholder="you@company.com" value={email} onChange={(e) => setEmail(e.target.value)}
+            className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-5 py-3.5 text-white placeholder:text-slate-600 focus:outline-none focus:border-accent/40 transition-colors" />
+          <button type="submit" disabled={submitting} className="w-full bg-accent hover:bg-accent-dim disabled:opacity-60 text-navy font-bold px-6 py-3.5 rounded-xl transition-colors">
+            {submitting ? "Saving..." : "See Full Comparison"}
+          </button>
+        </form>
+        <button onClick={onSkip} className="text-slate-500 hover:text-slate-300 text-xs mt-4 transition-colors">Skip for now →</button>
+      </div>
+    </div>
+  );
+}
 
 function ProfileSummary({ audit, label }: { audit: ProfileAudit; label: string }) {
   return (
@@ -82,6 +123,7 @@ export default function ComparePage() {
   const [loadingStep, setLoadingStep] = useState("");
   const [result, setResult] = useState<{ a: ProfileAudit; b: ProfileAudit; gap: GapAnalysis } | null>(null);
   const [captchaToken, setCaptchaToken] = useState("");
+  const [emailGate, setEmailGate] = useState<{ nameA: string; nameB: string; scoreA: number; scoreB: number; gradeA: string; gradeB: string; comparisonId: string } | null>(null);
 
   const handleCompare = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -98,7 +140,6 @@ export default function ComparePage() {
       setLoadingStep("Generating gap analysis...");
       const gap = generateGapAnalysis(auditA, auditB);
 
-      // Save to Convex and redirect
       try {
         const id = await storeComparison({
           profileUrlA: urlA,
@@ -109,7 +150,8 @@ export default function ComparePage() {
           auditDataB: JSON.stringify(auditB),
           gapAnalysis: JSON.stringify(gap),
         });
-        router.push(`/compare/${id}`);
+        setLoading(false);
+        setEmailGate({ nameA: auditA.profile.name, nameB: auditB.profile.name, scoreA: auditA.overallScore, scoreB: auditB.overallScore, gradeA: auditA.overallGrade, gradeB: auditB.overallGrade, comparisonId: id });
         return;
       } catch {
         setResult({ a: auditA, b: auditB, gap });
@@ -121,6 +163,10 @@ export default function ComparePage() {
       setLoading(false);
     }
   };
+
+  if (emailGate) {
+    return <CompareEmailGate {...emailGate} onSkip={() => router.push(`/compare/${emailGate.comparisonId}`)} />;
+  }
 
   if (loading) {
     return (

@@ -54,6 +54,22 @@ export async function getComparison(id: string) {
   return res.json();
 }
 
+export async function updateAuditEmail(id: string, email: string): Promise<void> {
+  await fetch(`${CONVEX_URL}/api/update-audit-email`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ id, email }),
+  });
+}
+
+export async function updateComparisonEmail(id: string, email: string): Promise<void> {
+  await fetch(`${CONVEX_URL}/api/update-comparison-email`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ id, email }),
+  });
+}
+
 export async function listComparisons(limit = 50) {
   const res = await fetch(`${CONVEX_URL}/api/list-comparisons?limit=${limit}`);
   return res.json();
