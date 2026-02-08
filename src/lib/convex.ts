@@ -1,4 +1,4 @@
-const CONVEX_URL = process.env.NEXT_PUBLIC_CONVEX_URL || "https://patient-toucan-352.eu-west-1.convex.cloud";
+const CONVEX_URL = process.env.NEXT_PUBLIC_CONVEX_URL || "https://patient-toucan-352.eu-west-1.convex.site";
 
 export async function storeAudit(data: {
   profileUrl: string;
