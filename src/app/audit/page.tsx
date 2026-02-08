@@ -20,70 +20,75 @@ export default function AuditPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    console.log("[GL] Starting audit for:", url);
     try {
-      // Start the Apify runs
       const res = await fetch("/api/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ profileUrl: url }),
       });
       const data = await res.json();
+      console.log("[GL] API response:", { status: data.status, source: data.source, hasAudit: !!data.audit });
 
-      if (data.audit) {
+      const saveAndRedirect = async (auditData: ProfileAudit, source: string) => {
         try {
           const id = await storeAudit({
             profileUrl: url,
-            profileName: data.audit.profile.name,
-            auditData: JSON.stringify(data.audit),
-            source: data.source || "mock",
-            overallScore: data.audit.overallScore,
-            overallGrade: data.audit.overallGrade,
+            profileName: auditData.profile.name,
+            auditData: JSON.stringify(auditData),
+            source,
+            overallScore: auditData.overallScore,
+            overallGrade: auditData.overallGrade,
           });
-          setLoading(false);
-          router.push(`/audit/${id}`);
-          return;
-        } catch {
-          setAudit(data.audit);
-          setLoading(false);
-          return;
+          console.log("[GL] Stored audit, id:", id);
+          if (id && typeof id === "string") {
+            router.push(`/audit/${id}`);
+            return true;
+          }
+        } catch (err) {
+          console.error("[GL] Store failed:", err);
         }
+        return false;
+      };
+
+      if (data.audit) {
+        const saved = await saveAndRedirect(data.audit, data.source || "mock");
+        if (!saved) {
+          console.log("[GL] Store failed, rendering inline");
+          setAudit(data.audit);
+        }
+        setLoading(false);
+        return;
       }
 
       if (data.status === "running") {
-        // Poll for completion
         const { profileRunId, postsRunId, profileDatasetId, postsDatasetId } = data;
         const params = new URLSearchParams({ profileRunId, postsRunId, profileDatasetId, postsDatasetId });
+        console.log("[GL] Polling for completion...");
 
         for (let i = 0; i < 60; i++) {
           await new Promise(r => setTimeout(r, 3000));
           const statusRes = await fetch(`/api/analyze/status?${params}`);
           const statusData = await statusRes.json();
+          console.log("[GL] Poll", i + 1, "status:", statusData.status);
 
           if (statusData.status === "complete") {
-            try {
-              const id = await storeAudit({
-                profileUrl: url,
-                profileName: statusData.audit.profile.name,
-                auditData: JSON.stringify(statusData.audit),
-                source: statusData.source || "live",
-                overallScore: statusData.audit.overallScore,
-                overallGrade: statusData.audit.overallGrade,
-              });
-              setLoading(false);
-              router.push(`/audit/${id}`);
-              return;
-            } catch {
+            console.log("[GL] Audit complete! Score:", statusData.audit?.overallScore);
+            const saved = await saveAndRedirect(statusData.audit, statusData.source || "live");
+            if (!saved) {
+              console.log("[GL] Store failed, rendering inline");
               setAudit(statusData.audit);
-              setLoading(false);
-              return;
             }
+            setLoading(false);
+            return;
           }
         }
       }
 
-      // Timeout or error — use mock
+      console.log("[GL] Falling back to mock data");
       setAudit(mockProfileA);
-    } catch {
+    } catch (err) {
+      console.error("[GL] Fatal error:", err);
       setAudit(mockProfileA);
     } finally {
       setLoading(false);
