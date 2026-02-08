@@ -1,0 +1,36 @@
+import html2canvas from "html2canvas-pro";
+import { jsPDF } from "jspdf";
+
+export async function exportAuditPDF(elementId: string, profileName: string) {
+  const element = document.getElementById(elementId);
+  if (!element) throw new Error("Element not found");
+
+  const canvas = await html2canvas(element, {
+    backgroundColor: "#0a0f1e",
+    scale: 2,
+    useCORS: true,
+  });
+
+  const imgData = canvas.toDataURL("image/png");
+  const pdf = new jsPDF("p", "mm", "a4");
+  const pageWidth = pdf.internal.pageSize.getWidth();
+  const pageHeight = pdf.internal.pageSize.getHeight();
+  const imgWidth = pageWidth;
+  const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+  let heightLeft = imgHeight;
+  let position = 0;
+
+  pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+  heightLeft -= pageHeight;
+
+  while (heightLeft > 0) {
+    position -= pageHeight;
+    pdf.addPage();
+    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+  }
+
+  const safeName = profileName.replace(/[^a-zA-Z0-9-_]/g, "-").toLowerCase();
+  pdf.save(`${safeName}-linkedin-audit.pdf`);
+}
