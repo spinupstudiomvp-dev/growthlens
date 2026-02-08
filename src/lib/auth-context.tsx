@@ -3,51 +3,62 @@ import { createContext, useContext, useState, useEffect, type ReactNode } from "
 
 interface AuthUser {
   email: string;
+  name: string;
+  picture?: string;
   userId: string;
 }
 
 interface AuthContextType {
   user: AuthUser | null;
-  login: (email: string) => void;
+  loginWithLinkedIn: () => void;
   logout: () => void;
   isLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
-  login: () => {},
+  loginWithLinkedIn: () => {},
   logout: () => {},
   isLoading: true,
 });
+
+function getCookie(name: string): string | null {
+  if (typeof document === "undefined") return null;
+  const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
+  return match ? decodeURIComponent(match[2]) : null;
+}
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Restore from localStorage
     try {
-      const stored = localStorage.getItem("gl_user");
-      if (stored) setUser(JSON.parse(stored));
+      const session = getCookie("gl_session");
+      if (session) {
+        const parsed = JSON.parse(session);
+        if (parsed.email) {
+          setUser(parsed);
+        }
+      }
     } catch {}
     setIsLoading(false);
   }, []);
 
-  const login = (email: string) => {
-    // TODO: Replace with proper Convex Auth magic link verification
-    // For now, simplified email-based auth
-    const userData = { email, userId: email };
-    setUser(userData);
-    localStorage.setItem("gl_user", JSON.stringify(userData));
+  const loginWithLinkedIn = () => {
+    window.location.href = "/api/auth/linkedin";
   };
 
-  const logout = () => {
+  const logout = async () => {
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+    } catch {}
+    document.cookie = "gl_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
     setUser(null);
-    localStorage.removeItem("gl_user");
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isLoading }}>
+    <AuthContext.Provider value={{ user, loginWithLinkedIn, logout, isLoading }}>
       {children}
     </AuthContext.Provider>
   );

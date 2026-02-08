@@ -4,6 +4,9 @@ import { v } from "convex/values";
 export default defineSchema({
   users: defineTable({
     email: v.string(),
+    name: v.optional(v.string()),
+    linkedinSub: v.optional(v.string()),
+    picture: v.optional(v.string()),
     trackedProfiles: v.array(v.string()), // LinkedIn URLs, max 5
     createdAt: v.number(),
     lastLogin: v.number(),

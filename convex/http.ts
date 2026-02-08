@@ -107,4 +107,56 @@ http.route({
   })),
 });
 
+// LinkedIn OAuth login
+http.route({
+  path: "/api/auth/linkedin-login",
+  method: "POST",
+  handler: httpAction(async (ctx, req) => {
+    const { email, name, linkedinSub, picture } = await req.json();
+    if (!email) {
+      return new Response(JSON.stringify({ error: "email required" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
+      });
+    }
+
+    // Find or create user
+    const existing = await ctx.runQuery(api.users.getByEmail, { email });
+    let userId: string;
+
+    if (existing) {
+      await ctx.runMutation(api.users.updateLogin, {
+        id: existing._id,
+        name,
+        linkedinSub,
+        picture,
+        lastLogin: Date.now(),
+      });
+      userId = existing._id;
+    } else {
+      userId = await ctx.runMutation(api.users.create, {
+        email,
+        name,
+        linkedinSub,
+        picture,
+        trackedProfiles: [],
+        createdAt: Date.now(),
+        lastLogin: Date.now(),
+      });
+    }
+
+    return new Response(JSON.stringify({ userId }), {
+      headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
+    });
+  }),
+});
+
+http.route({
+  path: "/api/auth/linkedin-login",
+  method: "OPTIONS",
+  handler: httpAction(async () => new Response(null, {
+    headers: { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Methods": "POST", "Access-Control-Allow-Headers": "Content-Type" },
+  })),
+});
+
 export default http;
