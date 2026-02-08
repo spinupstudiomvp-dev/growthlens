@@ -1,12 +1,18 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardHeader } from "@/components/ui";
 import { mockProfileA } from "@/lib/mock-data";
 import { ScoreRing, ProgressBar } from "@/components/charts";
 
+function formatNum(n: number): string {
+  return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 export default function Home() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   return (
     <div className="min-h-screen">
@@ -46,7 +52,7 @@ export default function Home() {
             <span className="text-accent font-mono text-sm font-semibold tracking-wider uppercase">See a Real Audit</span>
             <h2 className="text-3xl md:text-5xl font-bold text-white mt-4" style={{ fontFamily: 'Satoshi, sans-serif' }}>What you&apos;ll get</h2>
           </div>
-          <Card className="relative overflow-hidden">
+          {mounted && <Card className="relative overflow-hidden">
             <span className="absolute top-4 right-4 text-[10px] font-semibold uppercase tracking-widest text-accent/60 bg-accent/10 px-3 py-1 rounded-full border border-accent/10">Sample Audit</span>
             <div className="flex flex-col md:flex-row gap-8 items-start">
               {/* Left: Score + Stats */}
@@ -55,7 +61,7 @@ export default function Home() {
                 <h3 className="text-lg font-bold text-white" style={{ fontFamily: 'Satoshi, sans-serif' }}>{mockProfileA.profile.name}</h3>
                 <ScoreRing score={mockProfileA.overallScore} grade={mockProfileA.overallGrade} size={110} />
                 <div className="grid grid-cols-1 gap-2 text-sm w-full mt-2">
-                  <div className="flex justify-between"><span className="text-slate-400">Followers</span><span className="text-white font-semibold">{mockProfileA.profile.followers.toLocaleString()}</span></div>
+                  <div className="flex justify-between"><span className="text-slate-400">Followers</span><span className="text-white font-semibold">{formatNum(mockProfileA.profile.followers)}</span></div>
                   <div className="flex justify-between"><span className="text-slate-400">Eng. Rate</span><span className="text-white font-semibold">{mockProfileA.engagement.engagementRate}%</span></div>
                   <div className="flex justify-between"><span className="text-slate-400">Posts/wk</span><span className="text-white font-semibold">{mockProfileA.contentStrategy.postsPerWeek}</span></div>
                 </div>
@@ -76,7 +82,7 @@ export default function Home() {
                     {mockProfileA.contentStrategy.topPosts.slice(0, 3).map((post, i) => (
                       <div key={i} className="flex items-start justify-between gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.04]">
                         <p className="text-slate-300 text-xs leading-relaxed flex-1 min-w-0 truncate">&ldquo;{post.text}&rdquo;</p>
-                        <span className="text-[10px] text-slate-500 shrink-0">❤️ {post.likes.toLocaleString()}</span>
+                        <span className="text-[10px] text-slate-500 shrink-0">❤️ {formatNum(post.likes)}</span>
                       </div>
                     ))}
                   </div>
@@ -88,7 +94,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-          </Card>
+          </Card>}
         </div>
       </section>
 
