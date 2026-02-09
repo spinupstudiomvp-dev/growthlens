@@ -90,6 +90,39 @@ http.route({
   }),
 });
 
+// Waitlist join
+http.route({
+  path: "/api/waitlist-join",
+  method: "POST",
+  handler: httpAction(async (ctx, req) => {
+    const { email } = await req.json();
+    const id = await ctx.runMutation(api.waitlist.join, { email });
+    return new Response(JSON.stringify({ id }), {
+      headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
+    });
+  }),
+});
+
+http.route({
+  path: "/api/waitlist-join",
+  method: "OPTIONS",
+  handler: httpAction(async () => new Response(null, {
+    headers: { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Methods": "POST", "Access-Control-Allow-Headers": "Content-Type" },
+  })),
+});
+
+// Audit count
+http.route({
+  path: "/api/audit-count",
+  method: "GET",
+  handler: httpAction(async (ctx) => {
+    const count = await ctx.runQuery(api.audits.count, {});
+    return new Response(JSON.stringify({ count }), {
+      headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
+    });
+  }),
+});
+
 // CORS preflight
 http.route({
   path: "/api/store-audit",

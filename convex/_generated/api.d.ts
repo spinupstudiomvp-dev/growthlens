@@ -15,6 +15,7 @@ import type * as functions from "../functions.js";
 import type * as http from "../http.js";
 import type * as snapshots from "../snapshots.js";
 import type * as users from "../users.js";
+import type * as waitlist from "../waitlist.js";
 
 import type {
   ApiFromModules,
@@ -30,6 +31,7 @@ declare const fullApi: ApiFromModules<{
   http: typeof http;
   snapshots: typeof snapshots;
   users: typeof users;
+  waitlist: typeof waitlist;
 }>;
 
 /**

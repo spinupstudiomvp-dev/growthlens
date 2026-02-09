@@ -38,6 +38,14 @@ export const list = query({
   },
 });
 
+export const count = query({
+  args: {},
+  handler: async (ctx) => {
+    const audits = await ctx.db.query("audits").collect();
+    return audits.length;
+  },
+});
+
 export const listByEmail = query({
   args: { email: v.string() },
   handler: async (ctx, { email }) => {

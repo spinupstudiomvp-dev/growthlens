@@ -39,6 +39,12 @@ export default defineSchema({
     .index("by_email", ["email"])
     .index("by_createdAt", ["createdAt"]),
 
+  waitlist: defineTable({
+    email: v.string(),
+    createdAt: v.number(),
+  })
+    .index("by_email", ["email"]),
+
   comparisons: defineTable({
     profileUrlA: v.string(),
     profileUrlB: v.string(),

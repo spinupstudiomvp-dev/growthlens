@@ -4,6 +4,8 @@ import { Card, CardHeader } from "@/components/ui";
 import { mockProfileA } from "@/lib/mock-data";
 import { ScoreRing, ProgressBar } from "@/components/charts";
 
+const CONVEX_URL = process.env.NEXT_PUBLIC_CONVEX_URL || "https://patient-toucan-352.eu-west-1.convex.site";
+
 function formatNum(n: number): string {
   return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
@@ -11,8 +13,35 @@ function formatNum(n: number): string {
 export default function Home() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [auditCount, setAuditCount] = useState<number | null>(null);
+
   useEffect(() => setMounted(true), []);
+
+  useEffect(() => {
+    fetch(`${CONVEX_URL}/api/audit-count`)
+      .then((r) => r.json())
+      .then((d) => setAuditCount(d.count))
+      .catch(() => {});
+  }, []);
+
+  const handleWaitlistJoin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    try {
+      await fetch(`${CONVEX_URL}/api/waitlist-join`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      setSubmitted(true);
+    } catch {
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   if (!mounted) {
     return <div className="min-h-screen" />;
@@ -37,6 +66,9 @@ export default function Home() {
             <p className="text-lg text-slate-400 max-w-2xl mx-auto mb-12 leading-relaxed">
               Enter any LinkedIn or X profile. Get a complete strategy breakdown — content pillars, posting patterns, engagement tactics, and an action playbook to close the gap.
             </p>
+            {auditCount !== null && auditCount > 0 && (
+              <p className="text-sm text-slate-500 mt-4 mb-8">🔥 {formatNum(auditCount)} profiles audited so far</p>
+            )}
           </div>
           <div className="animate-fade-in-delay flex flex-col sm:flex-row gap-4 justify-center">
             <a href="/audit" className="bg-accent hover:bg-accent-dim text-navy font-bold px-8 py-4 rounded-xl text-lg transition-all hover:scale-[1.02] animate-pulse-glow inline-block">
@@ -189,7 +221,7 @@ export default function Home() {
           {submitted ? (
             <Card className="p-6 text-accent font-semibold text-center">✓ You&apos;re on the list. We&apos;ll be in touch.</Card>
           ) : (
-            <form onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }} className="flex gap-3">
+            <form onSubmit={handleWaitlistJoin} className="flex gap-3">
               <input
                 type="email"
                 required
@@ -198,8 +230,8 @@ export default function Home() {
                 onChange={(e) => setEmail(e.target.value)}
                 className="flex-1 bg-white/[0.03] border border-white/[0.08] rounded-xl px-5 py-3.5 text-white placeholder:text-slate-600 focus:outline-none focus:border-accent/40 transition-colors"
               />
-              <button type="submit" className="bg-accent hover:bg-accent-dim text-navy font-semibold px-6 py-3.5 rounded-xl transition-all hover:scale-[1.02] whitespace-nowrap">
-                Join Waitlist
+              <button type="submit" disabled={submitting} className="bg-accent hover:bg-accent-dim text-navy font-semibold px-6 py-3.5 rounded-xl transition-all hover:scale-[1.02] whitespace-nowrap disabled:opacity-50">
+                {submitting ? "Joining..." : "Join Waitlist"}
               </button>
             </form>
           )}
