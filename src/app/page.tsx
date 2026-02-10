@@ -16,14 +16,30 @@ export default function Home() {
   const [submitting, setSubmitting] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [auditCount, setAuditCount] = useState<number | null>(null);
-  const [recentAudits, setRecentAudits] = useState<Array<{ profileName: string; overallScore: number; overallGrade: string; _creationTime: number }>>([]);
+  const [recentAudits, setRecentAudits] = useState<Array<{ profileName: string; overallScore: number; overallGrade: string; _creationTime: number; profileUrl?: string; profileImageUrl?: string; headline?: string; _id: string }>>([]);
 
   useEffect(() => setMounted(true), []);
 
   useEffect(() => {
-    fetch(`${CONVEX_URL}/api/list-audits?limit=6`)
+    fetch(`${CONVEX_URL}/api/list-audits?limit=20`)
       .then((r) => r.json())
-      .then((d) => { if (Array.isArray(d) && d.length > 0) setRecentAudits(d); })
+      .then((d) => {
+        if (Array.isArray(d) && d.length > 0) {
+          // Deduplicate by profileName, keep latest, extract image/headline from auditData
+          const seen = new Map<string, typeof d[0]>();
+          for (const a of d) {
+            if (!seen.has(a.profileName)) {
+              try {
+                const ad = JSON.parse(a.auditData || "{}");
+                a.profileImageUrl = ad?.profile?.profileImageUrl || null;
+                a.headline = ad?.profile?.headline || null;
+              } catch { /* ignore */ }
+              seen.set(a.profileName, a);
+            }
+          }
+          setRecentAudits(Array.from(seen.values()).slice(0, 12));
+        }
+      })
       .catch(() => {});
   }, []);
 
@@ -51,12 +67,6 @@ export default function Home() {
     }
   };
 
-  function anonymizeName(name: string): string {
-    const parts = name.trim().split(/\s+/);
-    if (parts.length <= 1) return parts[0] || "User";
-    return `${parts[0]} ${parts[parts.length - 1][0]}.`;
-  }
-
   function relativeTime(ts: number): string {
     const diff = Date.now() - ts;
     const mins = Math.floor(diff / 60000);
@@ -68,13 +78,6 @@ export default function Home() {
     if (days === 1) return "yesterday";
     if (days < 7) return `${days}d ago`;
     return `${Math.floor(days / 7)}w ago`;
-  }
-
-  function scoreColor(score: number): string {
-    if (score >= 80) return "#10b981";
-    if (score >= 60) return "#3b82f6";
-    if (score >= 40) return "#f59e0b";
-    return "#ef4444";
   }
 
   if (!mounted) {
@@ -168,30 +171,73 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Recent Audits */}
+      {/* Audited Profiles — Social Proof Wall */}
       {recentAudits.length > 0 && (
-        <section className="py-16 px-6 md:px-8 section-divider">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-8">
-              <span className="text-accent font-mono text-sm font-semibold tracking-wider uppercase">Recent Audits</span>
-              <p className="text-slate-500 text-sm mt-2">Real profiles, real scores</p>
+        <section className="py-20 px-6 md:px-8 section-divider">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <span className="text-accent font-mono text-sm font-semibold tracking-wider uppercase">Profiles Audited</span>
+              <h2 className="text-2xl md:text-4xl font-bold text-white mt-3 mb-3" style={{ fontFamily: 'Satoshi, sans-serif' }}>See who&apos;s already been scored</h2>
+              <p className="text-slate-400 text-sm">Click any profile to view their full audit</p>
             </div>
-            <div className="flex gap-3 overflow-x-auto pb-4 scrollbar-hide">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
               {recentAudits.map((audit, i) => (
-                <Card key={i} className="p-4 shrink-0 w-[160px]">
-                  <div className="flex flex-col items-center gap-2 text-center">
-                    <div className="relative w-12 h-12">
-                      <svg className="w-12 h-12 -rotate-90" viewBox="0 0 48 48">
-                        <circle cx="24" cy="24" r="20" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="3" />
-                        <circle cx="24" cy="24" r="20" fill="none" stroke={scoreColor(audit.overallScore)} strokeWidth="3" strokeLinecap="round" strokeDasharray={`${(audit.overallScore / 100) * 125.6} 125.6`} />
-                      </svg>
-                      <span className="absolute inset-0 flex items-center justify-center text-white text-xs font-bold">{audit.overallScore}</span>
-                    </div>
-                    <p className="text-white text-sm font-semibold truncate w-full">{anonymizeName(audit.profileName)}</p>
-                    <span className="text-accent text-xs font-mono font-bold">{audit.overallGrade}</span>
-                    <span className="text-slate-500 text-[10px]">{relativeTime(audit._creationTime)}</span>
+                <a
+                  key={audit._id || i}
+                  href={`/audit/${audit._id}`}
+                  className="group relative bg-[#0d1520] border border-white/[0.06] rounded-2xl p-5 hover:border-accent/30 hover:bg-[#111c2e] transition-all duration-300 cursor-pointer"
+                >
+                  {/* Grade badge */}
+                  <div className={`absolute top-3 right-3 w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold font-mono ${
+                    audit.overallScore >= 80 ? 'bg-emerald-500/15 text-emerald-400' :
+                    audit.overallScore >= 60 ? 'bg-amber-500/15 text-amber-400' :
+                    'bg-red-500/15 text-red-400'
+                  }`}>
+                    {audit.overallGrade}
                   </div>
-                </Card>
+
+                  <div className="flex flex-col items-center text-center gap-3">
+                    {/* Profile image */}
+                    <div className="relative">
+                      <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-white/10 group-hover:border-accent/40 transition-colors bg-slate-800">
+                        {audit.profileImageUrl ? (
+                          <img
+                            src={audit.profileImageUrl}
+                            alt={audit.profileName}
+                            className="w-full h-full object-cover"
+                            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-slate-500 text-xl font-bold">
+                            {audit.profileName.charAt(0)}
+                          </div>
+                        )}
+                      </div>
+                      {/* Score ring */}
+                      <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-[#0d1520] border border-white/10 flex items-center justify-center">
+                        <span className={`text-[10px] font-bold font-mono ${
+                          audit.overallScore >= 80 ? 'text-emerald-400' :
+                          audit.overallScore >= 60 ? 'text-amber-400' :
+                          'text-red-400'
+                        }`}>{audit.overallScore}</span>
+                      </div>
+                    </div>
+
+                    {/* Name */}
+                    <div>
+                      <p className="text-white text-sm font-semibold truncate max-w-[140px] group-hover:text-accent transition-colors">{audit.profileName}</p>
+                      {audit.headline && (
+                        <p className="text-slate-500 text-[11px] mt-1 line-clamp-2 leading-tight max-w-[140px]">{audit.headline}</p>
+                      )}
+                    </div>
+
+                    {/* Time ago */}
+                    <span className="text-slate-600 text-[10px] font-mono">{relativeTime(audit._creationTime)}</span>
+                  </div>
+
+                  {/* Hover arrow */}
+                  <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity text-accent text-xs">→</div>
+                </a>
               ))}
             </div>
           </div>
