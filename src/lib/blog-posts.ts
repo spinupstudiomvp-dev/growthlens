@@ -956,6 +956,122 @@ Ready to see how your LinkedIn profile scores? GrowthLens gives you a complete a
 *[GrowthLens](/) is the free LinkedIn audit tool for founders. Instant analysis, actionable scores, zero cost. Try it now.*
 `,
   },
+  {
+    slug: "growthlens-vs-authoredup",
+    title: "GrowthLens vs AuthoredUp: Free Audit vs Full Writing Suite",
+    excerpt: "How does GrowthLens compare to AuthoredUp? One gives you a free instant profile audit, the other is a paid content creation suite. We break down exactly who each tool is for.",
+    date: "2026-02-10",
+    metaDescription: "GrowthLens vs AuthoredUp comparison: free LinkedIn profile audit tool vs paid content writing suite. Features, pricing, and which tool fits your LinkedIn strategy.",
+    keywords: ["growthlens vs authoredup", "authoredup alternative", "authoredup review", "linkedin audit tool free", "linkedin writing tool", "authoredup pricing"],
+    content: `
+# GrowthLens vs AuthoredUp: Free Audit vs Full Writing Suite
+
+Choosing the right LinkedIn tool depends on where you are in your journey. Are you trying to **figure out what's wrong** with your LinkedIn presence, or are you ready to **produce content at scale**?
+
+GrowthLens and AuthoredUp attack different parts of the LinkedIn growth problem. This comparison helps you understand which one you actually need — and whether you need both.
+
+## What Is AuthoredUp?
+
+AuthoredUp is a **LinkedIn content creation and analytics platform** built for consistent creators. It's a Chrome extension and web app that enhances your LinkedIn writing workflow.
+
+**AuthoredUp's core features:**
+- Rich text editor with formatting (bold, italic, lists) for LinkedIn posts
+- Post templates and snippet library
+- Draft management — write, save, and organize post ideas
+- Analytics dashboard tracking post performance over time
+- Content calendar for scheduling and planning
+- Post preview showing exactly how your content will look on LinkedIn
+- Hashtag suggestions and readability scoring
+
+AuthoredUp costs **$19.95/month** (billed annually) or $24.95 month-to-month. It requires a Chrome browser and LinkedIn account connection.
+
+## What Is GrowthLens?
+
+GrowthLens is a **free LinkedIn profile audit tool** that gives you an instant scorecard of your entire LinkedIn presence. No account needed, no Chrome extension, no LinkedIn login.
+
+**GrowthLens's core features:**
+- Instant profile audit with overall score and grade
+- Section-by-section scoring (headline, about, experience, content)
+- Engagement rate analysis across your recent posts
+- Actionable recommendations with priority ranking
+- Side-by-side profile comparisons
+- Shareable audit results
+
+GrowthLens is **completely free**. Paste a LinkedIn URL, get your audit in under 60 seconds.
+
+## Head-to-Head Comparison
+
+| Feature | GrowthLens | AuthoredUp |
+|---------|-----------|------------|
+| **Price** | Free | $19.95/mo |
+| **Profile audit** | ✅ Detailed scorecard | ❌ No audit feature |
+| **Content writing** | ❌ Not a writing tool | ✅ Rich text editor |
+| **Post analytics** | ✅ Engagement analysis | ✅ Full analytics dashboard |
+| **Comparisons** | ✅ Side-by-side profiles | ❌ No comparison feature |
+| **Scheduling** | ❌ No scheduling | ✅ Content calendar |
+| **Setup required** | None — paste a URL | Chrome extension install |
+| **LinkedIn login** | Not required | Required |
+| **Templates** | ❌ | ✅ Template library |
+| **Draft management** | ❌ | ✅ Save and organize drafts |
+
+## When to Use GrowthLens
+
+**You should start with GrowthLens if:**
+
+- You're not sure what's wrong with your LinkedIn presence
+- You want a quick diagnostic before investing in tools
+- You want to compare your profile against competitors or peers
+- You're a founder who needs to know: "Is my LinkedIn working?"
+- You want a free, zero-commitment starting point
+
+GrowthLens answers the question: **"Where do I stand, and what should I fix first?"**
+
+Think of it like a doctor's checkup. Before you start a fitness routine (content creation), you should know your baseline health metrics. That's GrowthLens.
+
+## When to Use AuthoredUp
+
+**AuthoredUp makes sense if:**
+
+- You already know your profile is solid and you're focused on content output
+- You post on LinkedIn 3+ times per week and need workflow tools
+- You want to build a library of templates and reusable snippets
+- You need rich text formatting that LinkedIn's native editor doesn't support
+- You want to plan content weeks in advance with a calendar view
+
+AuthoredUp answers the question: **"How do I create better content, faster?"**
+
+It's a production tool for serious, consistent LinkedIn creators.
+
+## Can You Use Both?
+
+Absolutely — and it's actually the ideal workflow:
+
+1. **Start with GrowthLens** — Run a free audit to understand your current LinkedIn score, identify weak spots, and get prioritized recommendations
+2. **Fix your profile** — Use GrowthLens's section-by-section feedback to optimize your headline, about section, and featured content
+3. **Start creating with AuthoredUp** — Once your profile is optimized (so visitors actually convert), use AuthoredUp to produce content consistently
+4. **Re-audit periodically** — Come back to GrowthLens monthly to track how your score improves as you implement changes
+
+This sequence matters. Creating great content with AuthoredUp won't help much if your profile itself turns visitors away. Fix the foundation first.
+
+## The Bottom Line
+
+**GrowthLens** is for **diagnosis** — understanding where you are and what to fix. It's free and instant.
+
+**AuthoredUp** is for **production** — creating content at scale once you know your profile is solid. It's a paid tool for committed creators.
+
+Most founders should start with GrowthLens (free, takes 60 seconds) and graduate to AuthoredUp when they're ready to commit to a consistent content schedule.
+
+## Try GrowthLens Now — It's Free
+
+Not sure where your LinkedIn profile stands? Get a complete audit with actionable recommendations in under 60 seconds. No signup, no LinkedIn login, completely free.
+
+**[Get your free LinkedIn profile audit →](/)** — See your score, fix what matters, then level up your content game.
+
+---
+
+*[GrowthLens](/) is the free LinkedIn audit tool for founders. Instant analysis, actionable scores, zero cost. Try it now.*
+`,
+  },
 ];
 
 export function getPostBySlug(slug: string): BlogPost | undefined {
