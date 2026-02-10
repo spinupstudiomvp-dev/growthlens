@@ -8,6 +8,7 @@ import { generateRecommendations } from "@/lib/recommendations";
 import PostLibrary from "@/components/PostLibrary";
 import CompareCTA from "@/components/CompareCTA";
 import TrackButton from "@/components/TrackButton";
+import FeedbackPrompt from "@/components/FeedbackPrompt";
 
 function ShareSection({ audit, auditId }: { audit: ProfileAudit; auditId: string }) {
   const [copied, setCopied] = useState(false);
@@ -268,6 +269,9 @@ export default function SavedAuditPage({ params }: { params: Promise<{ id: strin
             <HeatmapGrid data={contentStrategy.postingSchedule} />
           </Card>
         </div>
+
+        {/* Feedback */}
+        <FeedbackPrompt auditId={id} profileUrl={profile.url} />
 
         {/* Compare CTA */}
         <CompareCTA profileName={profile.name} profileUrl={profile.url} />

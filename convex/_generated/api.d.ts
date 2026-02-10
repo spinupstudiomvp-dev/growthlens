@@ -11,6 +11,7 @@
 import type * as audits from "../audits.js";
 import type * as comparisons from "../comparisons.js";
 import type * as email from "../email.js";
+import type * as feedback from "../feedback.js";
 import type * as functions from "../functions.js";
 import type * as http from "../http.js";
 import type * as snapshots from "../snapshots.js";
@@ -27,6 +28,7 @@ declare const fullApi: ApiFromModules<{
   audits: typeof audits;
   comparisons: typeof comparisons;
   email: typeof email;
+  feedback: typeof feedback;
   functions: typeof functions;
   http: typeof http;
   snapshots: typeof snapshots;
