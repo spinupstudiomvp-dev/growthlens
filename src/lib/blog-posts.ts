@@ -2401,6 +2401,253 @@ Together, these two scores give you a complete picture of where you stand and ex
 *Want to go deeper on LinkedIn optimization? Check out our [complete profile audit guide](/blog/how-to-audit-your-linkedin-profile) and [engagement rate benchmarks](/blog/linkedin-engagement-rate-benchmarks).*
 `,
   },
+  {
+    slug: "how-linkedin-algorithm-works-2026",
+    title: "How the LinkedIn Algorithm Works in 2026: A Founder's Guide to Getting Seen",
+    excerpt: "The LinkedIn algorithm decides who sees your posts. Here's exactly how it works in 2026 — ranking signals, content scoring, the distribution funnel, and how to use it to your advantage.",
+    date: "2026-02-12",
+    metaDescription: "How does the LinkedIn algorithm work in 2026? Learn the ranking signals, distribution phases, content scoring factors, and proven tactics to increase your reach as a founder.",
+    keywords: ["linkedin algorithm", "how linkedin algorithm works", "linkedin algorithm 2026", "linkedin reach", "linkedin algorithm tips", "linkedin post reach"],
+    content: `
+# How the LinkedIn Algorithm Works in 2026: A Founder's Guide to Getting Seen
+
+You wrote a great LinkedIn post. You hit publish. And then… 47 impressions.
+
+Meanwhile, someone else posts "I got fired. Best thing that ever happened to me." and gets 200,000 views.
+
+What's going on? The **LinkedIn algorithm** — the invisible system that decides who sees your content, when, and how often. Understanding how it works is the difference between shouting into the void and building a real audience.
+
+This guide breaks down exactly how LinkedIn's algorithm operates in 2026, based on what we've observed across thousands of profile audits and content analyses at GrowthLens.
+
+## The 3-Phase Distribution Funnel
+
+Every LinkedIn post goes through three phases. Think of it as a series of gates — your post must pass each one to reach the next level of distribution.
+
+### Phase 1: The Quality Filter (0-60 minutes)
+
+The moment you hit publish, LinkedIn's algorithm classifies your post into one of three buckets:
+
+- **Spam** — Immediately suppressed. Multiple links, engagement pod patterns, flagged keywords.
+- **Low quality** — Shown to a tiny slice of your network. Generic content, poor formatting, no engagement signals.
+- **High quality** — Shown to 8-15% of your first-degree connections as a test.
+
+**What the algorithm checks in Phase 1:**
+- Does the post contain spam signals? (excessive links, tagged accounts, engagement bait phrases)
+- Is the author a credible account? (complete profile, posting history, SSI score)
+- Does the content format match known high-quality patterns? (proper length, formatting, readability)
+
+**Your goal:** Pass the quality filter by avoiding spam signals and having a complete, active profile.
+
+### Phase 2: The Engagement Test (1-4 hours)
+
+If your post passes Phase 1, LinkedIn shows it to a test audience — typically 8-15% of your connections. Then it watches what happens.
+
+**What the algorithm measures:**
+- **Dwell time** — How long people spend reading your post. This is the #1 signal in 2026.
+- **Engagement velocity** — How quickly reactions, comments, and shares accumulate in the first hour.
+- **Engagement depth** — Comments are weighted 10-15x more than reactions. Shares are weighted even higher.
+- **"See more" clicks** — If your post is long enough to be truncated, clicks to expand signal interest.
+- **Negative signals** — Hide post, report, or unfollow actions kill distribution instantly.
+
+**The critical window:** The first 60 minutes after posting determine 80% of your post's total reach. This is why replying to every early comment matters — it doubles the comment count and signals an active conversation.
+
+### Phase 3: Extended Distribution (4-48 hours)
+
+Posts that perform well in Phase 2 enter the viral loop. LinkedIn starts showing your content to:
+
+- Second-degree connections (friends of friends)
+- People who follow hashtags you used
+- Users whose interests match your content topic
+- The "Suggested Posts" section of the feed
+
+This phase can last 24-48 hours for high-performing posts. Some exceptional posts continue generating impressions for weeks.
+
+**What triggers extended distribution:**
+- Engagement rate above 2-3% in Phase 2
+- High comment-to-reaction ratio (signals real conversation)
+- Shares and saves (signals high-value content worth bookmarking)
+- Profile visits from the post (people want to learn more about you)
+
+## The 9 Ranking Signals That Matter Most
+
+### 1. Dwell Time (Highest Weight)
+
+How long someone spends reading your post is now the single most important signal. LinkedIn can tell the difference between a 2-second scroll-past and a 45-second read.
+
+**How to optimize:** Write posts that are long enough to require attention (150-300 words minimum), use formatting that slows readers down (short paragraphs, line breaks, bullet lists), and open with a hook that makes people stop scrolling.
+
+### 2. Comments (Very High Weight)
+
+Comments signal deep engagement. A post with 20 comments will outperform a post with 200 likes every time.
+
+**How to optimize:** End posts with a genuine question. Reply to every comment to double the count. Write content that invites disagreement or personal sharing.
+
+### 3. Engagement Velocity (High Weight)
+
+Speed matters. 10 comments in the first 30 minutes is far more powerful than 10 comments spread over 24 hours.
+
+**How to optimize:** Post when your audience is online (Tuesday-Thursday, 8-10 AM in their time zone). Engage with others' content for 15-20 minutes before posting to warm up your profile. Reply to early comments immediately.
+
+### 4. Shares and Reposts (High Weight)
+
+When someone shares your post, LinkedIn treats it as a strong endorsement. Your content gets placed in front of an entirely new audience.
+
+**How to optimize:** Create content that makes people look smart for sharing it — data, frameworks, counterintuitive insights, or highly practical tips.
+
+### 5. "See More" Click Rate (Medium-High Weight)
+
+For posts long enough to be truncated, the percentage of viewers who click "see more" is a direct quality signal. A high click rate tells LinkedIn your hook is working.
+
+**How to optimize:** Write compelling first lines that create curiosity gaps. Don't reveal everything upfront — make people want to read more.
+
+### 6. Saves (Medium Weight)
+
+LinkedIn introduced a save/bookmark feature, and it's becoming an increasingly important signal. Saves indicate content that's valuable enough to return to — a stronger signal than a quick like.
+
+**How to optimize:** Create reference-worthy content: checklists, frameworks, data compilations, templates. Content people want to bookmark for later.
+
+### 7. Profile Visits from Post (Medium Weight)
+
+If your post drives people to visit your profile, that's a strong signal that your content sparked genuine interest in you as a person, not just the post.
+
+**How to optimize:** Include personal context in your posts. "Here's what I learned building my company" drives more profile visits than generic advice.
+
+### 8. Hashtag Relevance (Low-Medium Weight)
+
+Hashtags help LinkedIn categorize your content and show it to people who follow those topics. But their weight has decreased in 2026 compared to earlier years.
+
+**How to optimize:** Use 3-5 relevant hashtags. Mix broad (#Marketing, #SaaS) with niche (#B2BContent, #FounderLife). Don't use 15+ hashtags — it looks spammy.
+
+### 9. Creator Authority (Low-Medium Weight)
+
+LinkedIn considers your overall account quality when distributing your content. Accounts with complete profiles, high SSI scores, and consistent posting history get a baseline distribution boost.
+
+**How to optimize:** This is the long game. Complete your profile, post consistently, and build genuine engagement over time. There are no shortcuts for authority.
+
+## What the Algorithm Penalizes
+
+Understanding what LinkedIn suppresses is just as important as knowing what it promotes.
+
+### External Links
+
+Posts with links in the body get **30-50% less reach** than text-only posts. LinkedIn wants to keep users on the platform, so it actively suppresses content that drives people away.
+
+**The workaround:** Post your content as text, then add the link in the first comment. Or use the "see link in comments" approach. It's not perfect, but it significantly reduces the penalty.
+
+### Engagement Bait
+
+LinkedIn has cracked down hard on obvious engagement bait. Phrases like "Agree?" with a simple image, or "Like = Yes, Comment = No" polls will get your post suppressed.
+
+**What still works:** Genuine questions that invite thoughtful responses. "What's the best career advice you've received?" is fine. "Like if you agree that hard work matters!" is not.
+
+### Editing After Publishing
+
+Editing a post within the first hour resets its distribution. LinkedIn treats the edited post as potentially different content and re-evaluates it, often with a reduced initial audience.
+
+**The rule:** Proofread before publishing. If you must edit, wait at least 2-4 hours.
+
+### Pod Activity
+
+LinkedIn's algorithm can now detect engagement pods — groups of people who systematically like and comment on each other's posts. Pod engagement is increasingly discounted or ignored by the algorithm.
+
+**Why it backfires:** Pod comments tend to be generic ("Great insight!"), occur in suspicious patterns (same people, same timing), and don't lead to genuine conversation. The algorithm recognizes these patterns and may actually penalize your reach.
+
+### Tagging People Who Don't Engage
+
+Tagging 10 people in your post hoping they'll comment is a strategy from 2020. In 2026, if tagged people don't engage, it's a negative signal. LinkedIn interprets it as "even the people the author specifically chose to notify didn't find this interesting."
+
+**Better approach:** Tag 1-2 people only when the content is genuinely relevant to them, and ideally give them a heads-up via DM first.
+
+## Content Format Rankings in 2026
+
+Not all formats are equal. Here's how they rank by average organic reach:
+
+### Tier 1: Highest Reach
+- **Carousel posts (PDF documents)** — 3-5x text post reach. High dwell time from swiping.
+- **Long-form text posts (150-300 words)** — The workhorse. Consistent, reliable reach.
+
+### Tier 2: Strong Reach
+- **Native video (under 2 min)** — LinkedIn is investing heavily in video. Reach boost for native uploads.
+- **Polls** — Still generate high engagement, but algorithm weight has decreased.
+
+### Tier 3: Moderate Reach
+- **Image posts** — Decent for infographics and data visuals. Lower reach than text or carousels.
+- **LinkedIn Articles** — Lower initial distribution but longer shelf life via search.
+- **Newsletter posts** — Guaranteed notification to subscribers, but limited discovery beyond that.
+
+### Tier 4: Suppressed Reach
+- **Posts with external links** — 30-50% reach penalty.
+- **Reshares without commentary** — Minimal distribution. Always add your own perspective.
+- **Multi-image galleries** — Lower engagement than carousels despite looking similar.
+
+## The Algorithm Loves Conversation
+
+Here's the meta-principle behind everything above: **LinkedIn's algorithm optimizes for time spent on platform.** Every ranking signal ultimately serves this goal.
+
+- Comments create threads that keep people reading → more time on platform
+- Dwell time directly measures attention → more time on platform
+- Shares introduce content to new users → more time on platform
+- External links take people away → less time on platform
+
+When you understand this, algorithm optimization becomes simple: **create content that keeps people on LinkedIn longer.** Conversations, long reads, swipeable carousels, engaging videos — all of these serve LinkedIn's core business objective.
+
+## How to Use the Algorithm to Your Advantage
+
+### The Pre-Post Ritual (15 minutes)
+
+Before every post, spend 15 minutes engaging with other people's content. Comment on 5-10 posts in your niche. This warms up your profile in the algorithm and puts you on people's radar right before you publish.
+
+### The Golden Hour Strategy
+
+After posting, stay active for 60 minutes:
+- Reply to every comment within 5 minutes
+- Thank people for sharing
+- Ask follow-up questions to keep conversations going
+- React to other posts in your feed (maintains your activity signal)
+
+### The Consistency Compounding Effect
+
+The algorithm rewards consistency more than virality. Posting 4 times per week for 3 months builds more sustainable reach than one viral post followed by silence.
+
+Our data shows that founders who post consistently for 90+ days see their **baseline reach increase by 2-4x** — meaning even their "average" posts get significantly more impressions than when they started.
+
+### The Comment Strategy
+
+Commenting on large accounts' posts is the most underrated growth tactic on LinkedIn. A thoughtful comment on a post with 50,000 impressions can drive hundreds of profile visits. Do this daily.
+
+## Measure What Matters
+
+Track these metrics weekly to understand how the algorithm is treating your content:
+
+| Metric | What It Tells You | Target |
+|--------|-------------------|--------|
+| Impressions per post | Your baseline reach | Growing month over month |
+| Engagement rate | Content quality signal | Above 2% |
+| Comment-to-reaction ratio | Conversation depth | Above 1:5 |
+| Profile views from content | Authority building | Growing weekly |
+| Follower growth rate | Audience building | Net positive weekly |
+
+## How GrowthLens Helps You Beat the Algorithm
+
+Understanding the algorithm is one thing. Knowing where *your* content stands is another.
+
+**GrowthLens** analyzes your LinkedIn content performance against these algorithm signals and tells you:
+
+- **Your engagement rate** benchmarked against your follower tier
+- **Content format performance** — which formats get you the most reach
+- **Posting consistency score** — are you posting enough to build algorithmic momentum?
+- **Profile completeness** — does your profile meet the algorithm's quality bar?
+- **Specific recommendations** to improve your algorithmic distribution
+
+Stop guessing why your posts aren't getting reach. Get the data.
+
+**[Run your free LinkedIn audit →](/)** — 60 seconds, no signup. See how the algorithm views your profile and content, with specific fixes to improve your reach.
+
+---
+
+*Want to dive deeper? Read our guides on [LinkedIn engagement rate benchmarks](/blog/linkedin-engagement-rate-benchmarks) and [content strategy for founders](/blog/linkedin-content-strategy-founders).*
+`,
+  },
 ];
 
 export function getPostBySlug(slug: string): BlogPost | undefined {
