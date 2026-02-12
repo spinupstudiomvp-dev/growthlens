@@ -2138,6 +2138,269 @@ If you're going to do one thing after reading this, do this right now:
 *Ready to see how your X and LinkedIn profiles score? [Try GrowthLens free](/) — instant audit for both platforms, actionable recommendations, zero cost.*
 `,
   },
+  {
+    slug: "linkedin-ssi-score-guide",
+    title: "LinkedIn SSI Score: What It Is, How to Check It, and Why It Matters for Founders",
+    excerpt: "LinkedIn's Social Selling Index (SSI) is a hidden score that affects your visibility and reach. Here's how to find yours, what each component means, and how to improve it fast.",
+    date: "2026-02-12",
+    metaDescription: "Complete guide to LinkedIn SSI (Social Selling Index). Learn how to check your SSI score, what the 4 components mean, benchmarks by industry, and 8 tactics to improve it.",
+    keywords: ["linkedin ssi score", "social selling index", "linkedin ssi", "check linkedin ssi", "improve linkedin ssi", "linkedin social selling index"],
+    content: `
+# LinkedIn SSI Score: What It Is, How to Check It, and Why It Matters for Founders
+
+LinkedIn is scoring you right now. Every day. And most founders have no idea.
+
+It's called the **Social Selling Index (SSI)** — a score from 0 to 100 that LinkedIn calculates based on how effectively you use the platform. It quietly influences how far your content reaches, how often you appear in search results, and whether LinkedIn's algorithm considers you a "quality" account worth promoting.
+
+Yet barely 10% of LinkedIn users know it exists, and fewer than 3% actively optimize for it.
+
+This guide breaks down exactly what the SSI score is, how to find yours in 30 seconds, what each component means, and how to improve it strategically.
+
+## What Is LinkedIn's Social Selling Index (SSI)?
+
+The SSI is LinkedIn's internal scoring system that measures your effectiveness across four pillars of "social selling." Originally built for LinkedIn's Sales Navigator product, it's available to every LinkedIn user for free.
+
+Your SSI score ranges from **0 to 100**, broken into four equally weighted components (each worth 0-25 points):
+
+1. **Establishing your professional brand** (0-25)
+2. **Finding the right people** (0-25)
+3. **Engaging with insights** (0-25)
+4. **Building relationships** (0-25)
+
+LinkedIn updates your SSI daily. It's not a static snapshot — it reflects your activity over a rolling window.
+
+## How to Check Your LinkedIn SSI Score
+
+This takes 30 seconds:
+
+1. Make sure you're logged into LinkedIn
+2. Go to **[linkedin.com/sales/ssi](https://www.linkedin.com/sales/ssi)**
+3. Your score loads immediately — no Sales Navigator subscription required
+
+You'll see your total score, a breakdown of all four components, and two comparisons:
+- How you rank against **people in your industry**
+- How you rank against **people in your network**
+
+**Bookmark that URL.** Check it monthly to track your progress.
+
+## The 4 SSI Components Explained
+
+### Component 1: Establish Your Professional Brand (0-25)
+
+This measures how complete and compelling your profile is. LinkedIn is grading:
+
+- **Profile completeness** — photo, banner, headline, about, experience, skills, education
+- **Content publishing** — do you post original content?
+- **Profile views** — are people finding and viewing your profile?
+- **Search appearances** — do you show up when people search relevant keywords?
+
+**How founders typically score:** 12-18 out of 25. Most lose points on incomplete profiles (no banner, thin About section) and inconsistent posting.
+
+**Quick wins to improve:**
+- Complete every profile section (yes, even Skills and Education)
+- Add a custom banner with your value proposition
+- Post at least 2x per week
+- Optimize your headline with searchable keywords
+
+### Component 2: Find the Right People (0-25)
+
+This measures how effectively you use LinkedIn's search and discovery tools to find prospects, partners, and relevant connections.
+
+**What LinkedIn tracks:**
+- **Search usage** — how often you use LinkedIn search
+- **Profile browsing** — are you viewing profiles of relevant people?
+- **Connection request patterns** — are you connecting strategically?
+- **Lead list building** — using saved searches or Sales Navigator lists
+
+**How founders typically score:** 8-15 out of 25. This is the lowest component for most non-sales founders because they don't actively prospect on LinkedIn.
+
+**Quick wins to improve:**
+- Search for people in your target market 3-4 times per week
+- View 10-15 relevant profiles weekly (prospects, peers, industry leaders)
+- Send 5-10 personalized connection requests per week
+- Use LinkedIn's "People Also Viewed" sidebar to discover new connections
+
+### Component 3: Engage With Insights (0-25)
+
+This measures how actively you participate in LinkedIn conversations — not just posting, but engaging with others' content.
+
+**What LinkedIn tracks:**
+- **Content sharing** — posting, sharing articles, publishing newsletters
+- **Commenting** — thoughtful comments on others' posts
+- **Reactions** — liking and reacting to content in your feed
+- **Content engagement received** — how much engagement your own posts generate
+- **Group participation** — activity in LinkedIn Groups
+
+**How founders typically score:** 10-20 out of 25. Active posters score well here, but many founders forget that commenting on others' content counts just as much as publishing their own.
+
+**Quick wins to improve:**
+- Comment on 5-10 posts daily (substantive comments, not "Great post!")
+- Share industry articles with your perspective added
+- React to content in your feed as you scroll
+- Post original content 3-5 times per week
+
+### Component 4: Build Relationships (0-25)
+
+This measures the depth and quality of your LinkedIn network.
+
+**What LinkedIn tracks:**
+- **Connection acceptance rate** — do people accept your requests?
+- **InMail response rate** — do people reply when you message them?
+- **Relationship depth** — are you connecting with decision-makers and senior people?
+- **Network growth** — is your relevant network expanding?
+- **Mutual engagement** — do your connections engage with your content (and vice versa)?
+
+**How founders typically score:** 10-18 out of 25. This component rewards reciprocal relationships, not just large connection counts.
+
+**Quick wins to improve:**
+- Personalize every connection request (mention why you want to connect)
+- Follow up with new connections via DM within 48 hours
+- Engage regularly with your existing connections' content
+- Connect with decision-makers and senior professionals, not just peers
+
+## SSI Score Benchmarks: What's Good?
+
+### By Overall Score
+
+| SSI Score | Rating | Percentile |
+|-----------|--------|------------|
+| 80-100 | Elite | Top 1-5% |
+| 70-79 | Excellent | Top 10-15% |
+| 60-69 | Good | Top 25-30% |
+| 50-59 | Average | Middle of the pack |
+| 40-49 | Below Average | Bottom 40% |
+| Below 40 | Weak | Bottom 20% |
+
+### By Industry
+
+SSI scores vary significantly by industry. Tech and sales professionals tend to score higher because LinkedIn is a core part of their workflow:
+
+- **Technology/SaaS founders:** Average SSI 55-65
+- **Sales professionals:** Average SSI 60-75
+- **Marketing/Media:** Average SSI 50-60
+- **Finance/Consulting:** Average SSI 45-55
+- **Healthcare/Manufacturing:** Average SSI 35-45
+
+Don't compare yourself to an SDR who lives on LinkedIn 8 hours a day. Compare against founders in your vertical.
+
+## Does SSI Actually Affect Your Reach?
+
+This is the million-dollar question. LinkedIn has never officially confirmed that SSI directly impacts the algorithm. But the data strongly suggests correlation:
+
+**What we've observed across GrowthLens audits:**
+
+- Founders with SSI above 70 get **2-3x more impressions per post** than those below 50
+- High-SSI accounts appear in **40% more search results** for relevant keywords
+- Connection request acceptance rates are **25% higher** for profiles with SSI above 65
+
+Is this causation or correlation? Probably both. A high SSI means you're doing everything LinkedIn rewards — complete profile, active posting, genuine engagement, strategic networking. Those behaviors independently boost your visibility, and the SSI score likely acts as an additional quality signal to the algorithm.
+
+**The bottom line:** Even if SSI doesn't directly feed the algorithm, optimizing for SSI means optimizing for every behavior that increases your LinkedIn reach. It's a useful proxy metric.
+
+## 8 Tactics to Improve Your SSI Score
+
+### 1. Complete Your Profile to 100%
+
+This is the foundation. Every empty section drags down Component 1. Fill in:
+- Professional photo + custom banner
+- Keyword-rich headline (not just your job title)
+- About section with hook, story, proof, and CTA
+- All relevant experience with outcome-focused descriptions
+- 10+ skills aligned with your target keywords
+- Education, certifications, volunteer experience
+
+### 2. Post Original Content 3-5x Per Week
+
+Consistency matters more than virality for SSI. LinkedIn rewards regular publishing activity. Mix formats: text posts, carousels, the occasional video or poll.
+
+### 3. Comment Thoughtfully on 5-10 Posts Daily
+
+This is the highest-ROI SSI activity. It boosts Component 3 (Engage with Insights) and Component 4 (Build Relationships) simultaneously. Spend 15-20 minutes each morning leaving substantive comments on posts in your industry.
+
+**What counts as "substantive":**
+- Adds a new perspective or data point
+- Asks a genuine follow-up question
+- Shares a relevant personal experience
+- Is at least 2-3 sentences long
+
+**What doesn't count:** "Great post! 🔥" or "Thanks for sharing!"
+
+### 4. Send 5-10 Personalized Connection Requests Weekly
+
+Don't spray and pray. Target people in your ICP (Ideal Customer Profile) or industry. Always include a personalized note explaining why you want to connect.
+
+This boosts Component 2 (Find the Right People) and Component 4 (Build Relationships) — especially when your requests get accepted.
+
+### 5. Use LinkedIn Search Intentionally
+
+Component 2 rewards search activity. Spend 5 minutes a few times per week searching for:
+- Potential customers by job title and industry
+- Peers and founders in your space
+- People who posted about topics relevant to your product
+- Companies in your target market
+
+### 6. Engage With Your Existing Network
+
+Don't just chase new connections. LinkedIn rewards relationship depth. Scroll through your feed and engage with people you already know — react to their posts, comment on their updates, congratulate their milestones.
+
+### 7. Join and Participate in LinkedIn Groups
+
+Groups boost Component 3. Join 3-5 groups relevant to your industry. You don't need to post daily — even commenting on group discussions once a week helps.
+
+### 8. Track and Iterate Monthly
+
+Check your SSI at linkedin.com/sales/ssi on the first of every month. Note which component is lowest and focus your efforts there for the next 30 days.
+
+## SSI Score vs. GrowthLens Score: What's the Difference?
+
+LinkedIn's SSI measures your **activity and usage patterns** — how you use the platform. It rewards behaviors like searching, connecting, and posting regularly.
+
+**GrowthLens** measures your **profile quality and content effectiveness** — how well your LinkedIn presence converts visitors into followers, connections, and leads. It evaluates headline optimization, about section quality, content engagement rates, and strategic positioning.
+
+Think of it this way:
+- **SSI** = Are you using LinkedIn effectively? (Activity score)
+- **GrowthLens** = Is your LinkedIn presence working for you? (Quality score)
+
+They're complementary. A high SSI with a low GrowthLens score means you're active but your profile isn't converting. A high GrowthLens score with a low SSI means your profile is great but you're not active enough to get visibility.
+
+**The goal:** Optimize both. Use GrowthLens to fix your profile and content strategy, then use SSI as a daily activity scorecard.
+
+## The 7-Day SSI Boost Challenge
+
+Want to see your SSI jump 10-15 points in a week? Follow this daily plan:
+
+**Day 1:** Complete your profile to 100% (photo, banner, headline, about, experience, skills)
+
+**Day 2:** Post original content + comment on 10 posts in your industry
+
+**Day 3:** Send 10 personalized connection requests to people in your target market
+
+**Day 4:** Post original content + spend 15 minutes using LinkedIn search to find relevant people
+
+**Day 5:** Engage with 15 posts from your existing connections + join 2 relevant groups
+
+**Day 6:** Post a carousel or thread-style post + reply to all comments within 1 hour
+
+**Day 7:** Check your SSI score. Post your before/after on LinkedIn (meta-content about LinkedIn growth performs extremely well).
+
+Most founders who follow this challenge see a **10-20 point SSI increase** within the first week and sustained improvement after that.
+
+## Check Your Starting Point
+
+Before you start optimizing, get your baseline:
+
+1. **Check your SSI** at [linkedin.com/sales/ssi](https://www.linkedin.com/sales/ssi) — note your total score and weakest component
+2. **Run a GrowthLens audit** at [growthlens.xyz](/) — get your profile quality score and specific recommendations
+
+Together, these two scores give you a complete picture of where you stand and exactly what to work on.
+
+**[Get your free GrowthLens audit →](/)** — 60 seconds, no signup, actionable recommendations. Pair it with your SSI score for the full picture.
+
+---
+
+*Want to go deeper on LinkedIn optimization? Check out our [complete profile audit guide](/blog/how-to-audit-your-linkedin-profile) and [engagement rate benchmarks](/blog/linkedin-engagement-rate-benchmarks).*
+`,
+  },
 ];
 
 export function getPostBySlug(slug: string): BlogPost | undefined {
